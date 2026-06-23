@@ -1,0 +1,7 @@
+gas,retention_time_min,peak_height,source_type,notes
+H2,0.8,84,teaching_simulation,教学模拟 GC 峰，用于界面演示
+CO,1.4,62,teaching_simulation,教学模拟 GC 峰，用于界面演示
+CO2,2.2,71,teaching_simulation,教学模拟 GC 峰，用于界面演示
+CH4,3.1,44,teaching_simulation,教学模拟 GC 峰，用于界面演示
+C2H4,4.0,36,teaching_simulation,教学模拟 GC 峰，用于界面演示
+C2H6,4.8,24,teaching_simulation,教学模拟 GC 峰，用于界面演示

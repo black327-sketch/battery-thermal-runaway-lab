@@ -1,0 +1,9 @@
+mechanism_id,stage_id,mechanism_name,temperature_range_c,material_region,main_process,gas_products,heat_effect,teaching_summary,source_location,source_type,notes
+mech_001,stage_02,SEI膜分解,80-120,负极/SEI膜,SEI膜分解并暴露负极表面,CO2;C2H4,放热,SEI膜分解是热失控早期自加热启动的重要原因,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于SEI膜分解图
+mech_002,stage_03,隔膜热收缩与熔化,120-180,隔膜,PE/PP隔膜热收缩或熔融,,不直接产气但引发短路,隔膜失效使正负极接触，推动内部短路,锂离子电池热失控产物特性及危险性评估-一,pending_user_input,用于隔膜熔化图
+mech_003,stage_04,内部短路焦耳热释放,120-180,正负极界面,正负极直接接触形成短路,,强放热,内部短路会造成局部热点和温度急剧上升,锂离子电池热失控产物特性及危险性评估-一,pending_user_input,可与mech_002联合展示
+mech_004,stage_05,正极释氧与电解液氧化,180-220以上,正极/电解液,正极释氧并氧化电解液,CO2;CO;H2;HF,强放热,活性氧促进电解液剧烈氧化并生成大量气体,锂离子电池热失控产物特性及危险性评估-一/二,pending_user_input,用于正极释氧图
+mech_005,stage_05,H2生成路径,高温阶段,负极/粘结剂/电解液副产物,析锂与H2O、HF及粘结剂反应,H2,放热或伴随放热,H2是重要可燃气体，高SOC下生成风险更高,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于H2路径图
+mech_006,stage_05,CO与CO2生成路径,高温阶段,碳材料/电解液/正极,完全氧化生成CO2，不完全氧化生成CO,CO;CO2,放热,CO和CO2共同反映氧化程度和燃爆风险变化,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于CO/CO2路径图
+mech_007,stage_06,安全阀喷射与气体云扩散,热失控触发点,电池壳体/安全阀,内部压力升高导致安全阀开启,H2;CO;CO2;CH4;C2H4;HF,携带高温热量,喷射使可燃气体进入外部空间并形成气体云,锂离子电池热失控产物特性及危险性评估-一/五,pending_user_input,用于喷射图
+mech_008,stage_07,混合气体可燃风险,热失控后,外部空间,可燃气体与空气混合并接近可燃下限 LFL,H2;CO;CH4;C2H4,燃烧放热,可燃气体浓度达到 LFL 附近时教学风险等级升高,锂离子电池热失控产物特性及危险性评估-五,pending_user_input,用于 LFL 风险图

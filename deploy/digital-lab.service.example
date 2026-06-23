@@ -1,0 +1,19 @@
+[Unit]
+Description=Digital Battery Lab Streamlit App
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=digital-lab
+Group=digital-lab
+WorkingDirectory=/opt/digital-lab
+EnvironmentFile=-/etc/digital-lab/digital-lab.env
+ExecStart=/opt/digital-lab/deploy/start_streamlit.sh
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

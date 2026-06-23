@@ -1,0 +1,2 @@
+composition_id,literature_id,sample_id,soc_pct,gas_component,volume_fraction_pct,measurement_basis,instrument,detector,source_location,source_type,notes
+pending_gc_comp,pending_lit,pending_sample,,H2,,normalized_volume_fraction,,,,pending_user_input,待补充 GC 组成；需记录页码、表号或图号

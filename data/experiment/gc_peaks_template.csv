@@ -1,0 +1,2 @@
+peak_id,literature_id,sample_id,soc_pct,retention_time_min,signal_intensity,component,detector,source_location,source_type,notes
+pending_gc_peak,pending_lit,pending_sample,,,,,,,pending_user_input,待补充 GC 峰；无峰图或峰位数据时不得伪造

@@ -1,0 +1,12 @@
+gas_id,gas_name_cn,gas_name_en,formula,CAS_number,is_flammable,LFL_vol_percent,UFL_vol_percent,molecular_weight,role_in_thermal_runaway,source,source_type,reliability_level,note
+G001,氢气,Hydrogen,H2,1333-74-0,true,4.0,75.0,2.016,SEI分解/负极反应/电解液还原产气；最易点燃组分,SFPE Handbook 5th Ed.,literature,high,标准条件25°C/1atm
+G002,一氧化碳,Carbon Monoxide,CO,630-08-0,true,12.5,74.0,28.01,电解液氧化分解/不完全燃烧产物,SFPE Handbook 5th Ed.,literature,high,标准条件25°C/1atm；有毒
+G003,甲烷,Methane,CH4,74-82-8,true,5.0,15.0,16.04,电解液溶剂还原分解产物,SFPE Handbook 5th Ed.,literature,high,标准条件25°C/1atm
+G004,乙烯,Ethylene,C2H4,74-85-1,true,2.75,28.6,28.05,电解液分解/SEI分解产物；LFL较低,Engineering Toolbox,literature,medium,25°C/1atm；LFL数值与部分手册存在±0.1差异
+G005,乙烷,Ethane,C2H6,74-84-0,true,3.0,12.4,30.07,电解液分解产物,Engineering Toolbox,literature,high,标准条件25°C/1atm
+G006,丙烷,Propane,C3H8,74-98-6,true,2.1,9.5,44.10,部分文献产气组成中检出,DOE report; Engineering Toolbox,literature,high,标准条件25°C/1atm
+G007,丙烯,Propylene,C3H6,115-07-1,true,2.0,11.7,42.08,部分文献产气组成中包含,Engineering Toolbox,literature,medium,25°C/1atm
+G008,乙炔,Acetylene,C2H2,74-86-2,true,2.5,100.0,26.04,极端条件下可能生成；可分解爆炸,PHMSA; Engineering Toolbox,literature,high,LFL=2.5% UFL=100.0%可分解爆炸
+G009,二氧化碳,Carbon Dioxide,CO2,124-38-9,false,,,,44.01,不可燃惰性稀释剂；影响混合气体可燃性,-,reference,high,不参与Le Chatelier求和但影响稀释效应
+G010,氟化氢,Hydrogen Fluoride,HF,7664-39-3,false,,,,20.01,不可燃；LiPF6分解产物；剧毒,-,reference,high,不参与LFL_mix计算
+G011,氮气,Nitrogen,N2,7727-37-9,false,,,,28.01,不可燃惰性稀释剂；用于气氛置换,-,reference,high,不参与LFL_mix计算

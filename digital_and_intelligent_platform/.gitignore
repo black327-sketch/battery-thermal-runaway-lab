@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.streamlit/secrets.toml
+.playwright-mcp/
+.playwright-cli/
+.codex-backups/
+.claude/
+.superpowers/
+test-results/
+output/
+page-*.png
+*.tmp

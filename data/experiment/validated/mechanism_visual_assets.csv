@@ -1,0 +1,10 @@
+﻿asset_id,stage_id,asset_title,visual_type,target_page,scene_description,key_labels,reaction_equations,visual_style,status,file_path,source_type,notes
+asset_001,stage_01,热失控阶段总览,overview,实验导学;机理可视化;报告,从正常电池到初始加热、SEI膜分解、隔膜熔化、内部短路、正极释氧、安全阀喷射、燃烧衰减的流程图,正常电池;初始升温;SEI膜分解;隔膜熔化;内部短路;正极释氧;安全阀喷射;燃烧衰减,,二维教学示意图，现代化数智化实验平台风格，工业实验室视觉，16:9，中文标签，箭头流程,pending,assets/mechanism/01_thermal_runaway_overview.png,pending_user_input,第一张总览图
+asset_002,stage_02,SEI膜分解与CO2/C2H4生成,mechanism,机理可视化;二维实验台,负极石墨表面SEI膜在80-120℃破裂分解并释放CO2和C2H4气体,负极石墨;SEI膜;CO2;C2H4;80-120℃,(CH2OCO2Li)2 → Li2CO3 + C2H4 + CO2 + 1/2O2,二维剖面教学图，放大负极SEI膜，气泡释放，清晰中文标签,pending,assets/mechanism/02_sei_decomposition.png,pending_user_input,用于解释第一次采气
+asset_003,stage_03,隔膜熔化与内部短路,mechanism,机理可视化;二维实验台,隔膜热收缩或熔化导致正负极接触并形成内部短路,隔膜;正极;负极;内部短路;焦耳热,,二维电池剖面图，电子短路路径发光，局部热点,pending,assets/mechanism/03_separator_melting_short_circuit.png,pending_user_input,用于解释电压下降和温升跳变
+asset_004,stage_05,正极释氧与电解液氧化,mechanism,机理可视化;二维实验台,正极材料释放活性氧并与电解液反应生成CO2、CO、H2、HF等气体,正极释氧;电解液氧化;CO2;CO;H2;HF,C3H4O3 + 5/2O2 → 3CO2 + 2H2O,二维教学图，正极氧气粒子释放，气体产物出现，热流箭头,pending,assets/mechanism/04_cathode_oxygen_electrolyte_oxidation.png,pending_user_input,用于解释大量产气
+asset_005,stage_05,H2生成路径,mechanism,机理可视化;风险评价,高SOC下析锂与H2O、HF、粘结剂反应释放H2,高SOC;析锂;H2O;HF;PVDF;H2,2Li + H2O → Li2O + H2; 2Li + 2HF → 2LiF + H2,二维机理图，突出H2气泡释放和燃爆风险,pending,assets/mechanism/05_hydrogen_generation_pathway.png,pending_user_input,用于解释H2风险
+asset_006,stage_05,CO与CO2生成路径,mechanism,机理可视化;风险评价,完全氧化生成CO2，不完全氧化和高温碳酸盐反应生成CO,CO2;CO;完全氧化;不完全氧化,C + O2 → CO2; C + 1/2O2 → CO; Li2CO3 + C → Li2O + 2CO,二维对比图，两条路径左右对照,pending,assets/mechanism/06_co_co2_generation_pathway.png,pending_user_input,用于解释CO/CO2变化
+asset_007,stage_06,安全阀喷射与气体云扩散,phenomenon,二维实验台;报告,内部压力升高后安全阀开启，高温气体、电解液蒸气、颗粒和烟雾喷出,压力升高;安全阀;喷射;气体云;采样节点,,二维防爆舱示意图，气体云从安全阀喷出但不画真实爆炸,pending,assets/mechanism/07_venting_gas_cloud.png,pending_user_input,用于解释喷阀采气
+asset_008,stage_07,LFL混合气体风险评价,risk,可燃极限计算;报告,H2、CO、CH4、C2H4等可燃气体进入LFL_mix计算并输出风险等级,H2;CO;CH4;C2H4;CO2;N2;LFL_mix;风险等级,Le Chatelier混合规则,数智化风险评价界面风格，气体分子流入LFL计算模块，右侧风险仪表盘,pending,assets/mechanism/08_lel_risk_evaluation.png,pending_user_input,用于风险评价教学
+

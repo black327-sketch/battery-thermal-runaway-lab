@@ -1,0 +1,9 @@
+time_min,temperature_c,heating_rate_c_min,stage,source_type,notes
+0,25,0.0,准备,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+10,45,0.8,升温,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+20,80,1.4,升温,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+30,125,2.1,升温,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+38,180,4.2,加速,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+42,260,9.5,热失控高亮,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+55,80,0.0,冷却,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据
+70,35,0.0,冷却完成,teaching_interpolation,教学插值 / 模拟曲线，非文献原始数据

@@ -1,0 +1,2 @@
+curve_id,literature_id,sample_id,soc_pct,time_s,pressure_kpa,phase,source_type,source_location,notes
+pending_pressure_curve,pending_lit,pending_sample,,,,initial,pending_user_input,,待补充压力曲线；当前演示曲线为教学模拟数据

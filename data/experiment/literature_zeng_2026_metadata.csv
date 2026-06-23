@@ -1,0 +1,2 @@
+literature_id,title,authors,journal,year,doi,experiment_type,battery_type,cell_format,chemistry,nominal_capacity,notes,data_status
+zeng_2026_lfp_prismatic,方壳磷酸铁锂锂离子电池热失控不同阶段产热产气机理研究,曾垂辉等,,2026,10.19799/j.cnki.2095-4239.2026.0036,防爆舱-加热板热失控产气实验,22Ah 方壳磷酸铁锂硬壳电池,prismatic hard-case,LFP,22 Ah,依据用户提供题名、DOI、实验对象和流程整理；仅用于教学数据回放与风险评价演示,partially_extracted

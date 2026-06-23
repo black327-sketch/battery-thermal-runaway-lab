@@ -1,0 +1,34 @@
+data_id,data_file,data_type,source_type,source_description,is_literature,notes
+normalized_gas_data,data/normalized_gas_data.csv,gas_composition,literature,47条文献产气组成记录；覆盖8种化学体系(NCM111/523/622/811/NCM9-0.5-0.5/LFP/NCA/18650)；0-143% SOC；30-60°C；部分含实验LFL/UFL标签,true,数据来自公开文献整理；每条记录标注source_type(data_type)区分文献数据/计算标签/教学模拟
+gas_lfl_constants,data/gas_lfl_constants.csv,lel_constants,literature,SFPE Handbook 5th Ed. / Engineering Toolbox / PHMSA / DOE report；11种气体（8可燃+3不可燃）含CAS号,true,来源为公开权威手册和工程参考；标注置信度；非权威数据表述
+virtual_scenarios,data/virtual_scenarios.csv,teaching_scenario,teaching_simulation,虚拟空间场景参数用于教学演示,false,非真实工程场景
+arc_curve_demo,data/experiment/arc_curve_demo.csv,arc_curve,teaching_interpolation,ARC 教学插值 / 模拟曲线,false,非文献原始数据
+pressure_curve_demo,data/experiment/pressure_curve_demo.csv,pressure_curve,teaching_simulation,20 L 罐压力教学可视化模拟,false,非文献原始曲线
+gc_peaks_demo,data/experiment/gc_peaks_demo.csv,gc_chromatogram,teaching_simulation,GC 色谱峰教学模拟,false,用于界面演示
+gas_volume_params,data/experiment/gas_volume_params.csv,gas_volume,pending_user_input,待补充文献产气量计算公式和参数,false,当前不输出正式文献计算结果
+literature_metadata_template,data/experiment/literature_metadata_template.csv,literature_metadata,pending_user_input,文献元数据录入模板,false,用于后续录入真实文献信息
+battery_sample_template,data/experiment/battery_sample_template.csv,battery_sample,pending_user_input,电池样品信息录入模板,false,用于后续录入实验对象信息
+arc_key_points_template,data/experiment/arc_key_points_template.csv,arc_key_points,pending_user_input,ARC 关键节点录入模板,false,用于后续录入文献关键温度点
+arc_curve_template,data/experiment/arc_curve_template.csv,arc_curve,pending_user_input,ARC 曲线录入模板,false,文献图数字化或插值数据需区分 source_type
+pressure_curve_template,data/experiment/pressure_curve_template.csv,pressure_curve,pending_user_input,压力曲线录入模板,false,用于后续录入 20 L 罐或热失控压力数据
+gc_composition_template,data/experiment/gc_composition_template.csv,gc_composition,pending_user_input,GC 组分录入模板,false,用于后续录入不同 SOC 的气体组成
+gc_peaks_template,data/experiment/gc_peaks_template.csv,gc_peaks,pending_user_input,GC 色谱峰录入模板,false,无峰图或峰位数据时不得伪造
+gas_volume_formula_template,data/experiment/gas_volume_formula_template.csv,gas_volume_formula,pending_user_input,产气量公式和参数录入模板,false,真实公式缺失时继续 pending_user_input
+lel_constants_reference_template,data/experiment/lel_constants_reference_template.csv,lel_constants_reference,literature,LFL/UFL常数完整来源模板；含SFPE Handbook/Engineering Toolbox/PHMSA/DOE/ISO 10156等来源,true,已填充实际权威来源；部分来源仍标记为medium confidence待进一步交叉验证
+literature_zeng_2026_metadata,data/experiment/literature_zeng_2026_metadata.csv,literature_metadata,literature,曾垂辉等 2026 文献信息,true,用户提供题名和 DOI；用于文献装置模式来源说明
+literature_zeng_2026_battery_sample,data/experiment/literature_zeng_2026_battery_sample.csv,battery_sample,literature,曾垂辉等 2026 表 1 电池样品参数,true,仅录入用户提供的表 1 明确字段
+literature_zeng_2026_arc_key_points,data/experiment/literature_zeng_2026_arc_key_points.csv,thermal_runaway_key_points,literature,曾垂辉等 2026 表 2 热失控关键节点,true,仅录入用户提供的表 2 明确节点；未数字化曲线
+literature_zeng_2026_gc_composition,data/experiment/literature_zeng_2026_gc_composition.csv,gc_composition,pending_user_input,曾垂辉等 2026 表 3 阶段产气组成占位,false,表 3 具体数值未提供，保留空值和 pending_user_input，不得表述为文献原始数据
+vld_literature_metadata,data/experiment/validated/literature_metadata_validated.csv,literature_metadata,pending_user_input,文献元数据模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_battery_sample,data/experiment/validated/battery_sample_validated.csv,battery_sample,pending_user_input,电池样品参数模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_thermal_runaway_stage,data/experiment/validated/thermal_runaway_stage_validated.csv,thermal_runaway_stage,pending_user_input,热失控阶段划分模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_reaction_mechanism,data/experiment/validated/reaction_mechanism_validated.csv,reaction_mechanism,pending_user_input,反应机理模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_gas_generation_reaction,data/experiment/validated/gas_generation_reaction_validated.csv,gas_generation_reaction,pending_user_input,产气反应方程模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_gc_composition,data/experiment/validated/gc_composition_validated.csv,gc_composition,pending_user_input,GC气体组成模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_lel_constants_reference,data/experiment/validated/lel_constants_reference_validated.csv,lel_constants_reference,pending_user_input,LFL/UFL常数来源模板（validated）,false,真实文献数据模板，待用户填写并校验
+vld_mechanism_visual_assets,data/experiment/validated/mechanism_visual_assets.csv,visual_assets,pending_user_input,机理可视化素材模板,false,真实文献数据模板，待用户填写并校验
+vld_mechanism_video_assets,data/experiment/validated/mechanism_video_assets.csv,video_assets,pending_user_input,机理可视化视频素材模板,false,真实文献数据模板，待用户填写并校验
+literature_references,data/experiment/literature_references.csv,literature_references,literature,10条文献DOI引用记录；覆盖产气组成/LEL实验/可燃极限/爆炸危害/计算标准,true,用于报告和页面中的数据来源引用
+lfl_reference_template,data/lfl_reference_template.csv,lel_constants,literature,11种气体（8可燃+3不可燃）的完整LFL/UFL参考数据；含CAS号/分子量/来源/置信度,true,已填充SFPE Handbook/Engineering Toolbox/PHMSA等权威来源
+calculated_lfl_labels,data/experiment/calculated_lfl_labels.csv,calculated_labels,calculated_label,47条记录的Le Chatelier三方法LFL_mix计算标签（fuel_basis/vent_known_basis/missing_as_N2）,false,计算标签；不表述为实验测量值；仅用于教学对比
+ml_prediction_comparison,data/experiment/ml_prediction_comparison.csv,ml_prediction,calculated_label,5种ML模型×13条实验标签的LOOCV交叉验证预测结果,false,ML预测为计算标签；小样本下ML不超越物理baseline；仅用于教学对比展示

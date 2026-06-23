@@ -1,0 +1,6 @@
+sample_id,literature_id,battery_type,cell_format,chemistry,cathode,anode,electrolyte,nominal_capacity_ah,nominal_voltage_v,soc_pct,mass_g,energy_wh,source_location,source_type,notes,dimensions_mm,charge_current_a,standard_charge_voltage_v,discharge_current_a,discharge_cutoff_voltage_v
+zeng_2026_lfp_0soc,zeng_2026_lfp_prismatic,22Ah 方壳磷酸铁锂硬壳电池,prismatic hard-case,LFP,LiFePO4,,,22,3.22,0,628±10,,Table 1,literature,尺寸和充放电参数为用户提供的表 1 信息；SOC 为实验组别,128.7×148.7×17.7,22,3.65,22,2.5
+zeng_2026_lfp_25soc,zeng_2026_lfp_prismatic,22Ah 方壳磷酸铁锂硬壳电池,prismatic hard-case,LFP,LiFePO4,,,22,3.22,25,628±10,,Table 1,literature,尺寸和充放电参数为用户提供的表 1 信息；SOC 为实验组别,128.7×148.7×17.7,22,3.65,22,2.5
+zeng_2026_lfp_50soc,zeng_2026_lfp_prismatic,22Ah 方壳磷酸铁锂硬壳电池,prismatic hard-case,LFP,LiFePO4,,,22,3.22,50,628±10,,Table 1,literature,尺寸和充放电参数为用户提供的表 1 信息；SOC 为实验组别,128.7×148.7×17.7,22,3.65,22,2.5
+zeng_2026_lfp_75soc,zeng_2026_lfp_prismatic,22Ah 方壳磷酸铁锂硬壳电池,prismatic hard-case,LFP,LiFePO4,,,22,3.22,75,628±10,,Table 1,literature,尺寸和充放电参数为用户提供的表 1 信息；SOC 为实验组别,128.7×148.7×17.7,22,3.65,22,2.5
+zeng_2026_lfp_100soc,zeng_2026_lfp_prismatic,22Ah 方壳磷酸铁锂硬壳电池,prismatic hard-case,LFP,LiFePO4,,,22,3.22,100,628±10,,Table 1,literature,尺寸和充放电参数为用户提供的表 1 信息；SOC 为实验组别,128.7×148.7×17.7,22,3.65,22,2.5

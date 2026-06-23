@@ -1,0 +1,12 @@
+gas_name,gas_formula,CAS_number,LFL_vol_pct,UFL_vol_pct,is_combustible,data_source,confidence_level,notes
+氢气,H2,1333-74-0,4.0,75.0,true,SFPE Handbook 5th Ed.,high,标准条件 25°C/1atm；LFL=4.0% UFL=75.0%
+一氧化碳,CO,630-08-0,12.5,74.0,true,SFPE Handbook 5th Ed.,high,标准条件 25°C/1atm；有毒且可燃
+甲烷,CH4,74-82-8,5.0,15.0,true,SFPE Handbook 5th Ed.,high,标准条件 25°C/1atm；典型可燃气体
+乙烯,C2H4,74-85-1,2.75,28.6,true,Engineering Toolbox,medium,25°C/1atm；LFL较低，易点燃
+乙烷,C2H6,74-84-0,3.0,12.4,true,Engineering Toolbox,high,标准条件 25°C/1atm；常见于电解液分解产物
+丙烷,C3H8,74-98-6,2.1,9.5,true,DOE report; Engineering Toolbox,high,标准条件 25°C/1atm；部分热失控产气中检出
+丙烯,C3H6,115-07-1,2.0,11.7,true,Engineering Toolbox,medium,25°C/1atm；部分文献产气组成中包含
+乙炔,C2H2,74-86-2,2.5,100.0,true,PHMSA; Engineering Toolbox,high,LFL=2.5% UFL=100.0%；可分解爆炸
+二氧化碳,CO2,124-38-9,,,false,-,high,不可燃；作为惰性稀释剂影响混合气体可燃性
+氟化氢,HF,7664-39-3,,,false,-,high,不可燃但剧毒；不参与LFL_mix计算
+氮气,N2,7727-37-9,,,false,-,high,不可燃；惰性稀释剂；不参与LFL_mix计算

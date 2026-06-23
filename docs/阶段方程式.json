@@ -1,0 +1,774 @@
+{
+  "metadata": {
+    "title": "锂离子电池热失控阶段反应机理与产气方程式",
+    "version": "1.0",
+    "application": "二维交互实验台同步反应机理与实验报告生成",
+    "scope": "虚拟仿真教学",
+    "disclaimer": "本文件用于锂离子电池热失控产气机理的虚拟仿真教学展示。反应路径为代表性机理表达，实际反应受电池体系、材料组成、SOC、温度、压力及实验条件影响，不作为真实工程安全判断、实验操作指导或事故预测依据。"
+  },
+  "interaction_mapping": {
+    "initial": "operation_preparation",
+    "soc_selected": "operation_soc",
+    "battery_loaded": "operation_loading",
+    "chamber_closed": "operation_sealing",
+    "leak_test_completed": "operation_leak_test",
+    "vacuum_started": "operation_vacuum",
+    "vacuum_completed": "operation_vacuum",
+    "nitrogen_valve_open": "operation_nitrogen_purge",
+    "nitrogen_filling": "operation_nitrogen_purge",
+    "nitrogen_purge_completed": "operation_nitrogen_purge_completed",
+    "arc_heating_started": "reaction_stage_1",
+    "sei_decomposition": "reaction_stage_1",
+    "electrolyte_reaction": "reaction_stage_2",
+    "separator_failure": "reaction_stage_2",
+    "rapid_temperature_rise": "reaction_stage_3",
+    "thermal_runaway": "reaction_stage_3",
+    "venting": "reaction_stage_3",
+    "high_temperature_reaction": "reaction_stage_4",
+    "combustion": "reaction_stage_4",
+    "cooling": "operation_cooling",
+    "sampling_valve_open": "operation_sampling",
+    "sampling": "operation_sampling",
+    "sampling_completed": "operation_sampling_completed",
+    "gc_analysis": "operation_gc",
+    "ms_analysis": "operation_ms",
+    "computer_analysis": "operation_data_analysis",
+    "composition_confirmed": "operation_data_analysis",
+    "lfl_calculation": "operation_lfl",
+    "risk_assessment": "operation_risk",
+    "report_generation": "operation_report"
+  },
+  "stages": [
+    {
+      "id": "operation_preparation",
+      "category": "装置操作",
+      "title": "实验准备",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "initial"
+      ],
+      "mechanism_summary": "当前处于实验准备阶段，主要进行装置检查、实验模式确认和安全状态确认，尚未触发热失控化学反应。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "当前阶段以实验准备和装置检查为主，未触发新的化学反应。",
+      "teaching_focus": [
+        "认识实验一与实验二的总体任务",
+        "确认 ARC、采样系统、GC-MS 和 DAQ 数据采集仪的功能",
+        "理解虚拟实验的安全边界"
+      ],
+      "report_text": "完成实验装置、实验模式及安全状态确认。该阶段未发生热失控反应。"
+    },
+    {
+      "id": "operation_soc",
+      "category": "参数设置",
+      "title": "SOC 设置",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "soc_selected"
+      ],
+      "mechanism_summary": "SOC 影响电池内部储能水平、热失控强度、产气量及气体组成。本阶段仅完成教学参数设置，不直接触发化学反应。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "SOC 参数已设置。当前阶段未触发新的化学反应。",
+      "teaching_focus": [
+        "比较不同 SOC 下的产气量和风险差异",
+        "理解 SOC 与热失控严重程度之间的关系"
+      ],
+      "report_text": "已设置实验电池 SOC。SOC 参数将用于后续温升、产气量及可燃风险的教学模拟。"
+    },
+    {
+      "id": "operation_loading",
+      "category": "装置操作",
+      "title": "装入电池",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "battery_loaded"
+      ],
+      "mechanism_summary": "完成电池装样及测温、测压和电压监测连接。本阶段属于装置操作，不触发热失控反应。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "电池已装入实验系统。当前阶段以装样和传感器连接为主。",
+      "teaching_focus": [
+        "确认电池、热电偶和电压采集通道的位置",
+        "理解 T1、T2、T3 及电压信号的监测意义"
+      ],
+      "report_text": "完成电池装样及温度、电压、压力监测通道连接。"
+    },
+    {
+      "id": "operation_sealing",
+      "category": "装置操作",
+      "title": "密封实验系统",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "chamber_closed"
+      ],
+      "mechanism_summary": "完成 ARC 实验舱或气体收集系统密封，为后续气密性检查、抽真空和氮气置换做准备。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "实验系统已密封。当前阶段未触发新的化学反应。",
+      "teaching_focus": [
+        "理解密封状态对气体定量采集的重要性",
+        "避免外界空气对气体组成和浓度计算造成干扰"
+      ],
+      "report_text": "完成实验舱及气体采集系统密封。"
+    },
+    {
+      "id": "operation_leak_test",
+      "category": "装置操作",
+      "title": "气密性检测",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "leak_test_completed"
+      ],
+      "mechanism_summary": "检查实验舱、管路和采样系统的密封完整性。本阶段属于装置状态确认。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "气密性检测完成。当前阶段未触发新的化学反应。",
+      "teaching_focus": [
+        "认识泄漏对气体组分分析和可燃风险评价的影响",
+        "理解密封系统的数据质量要求"
+      ],
+      "report_text": "完成实验系统气密性检测，系统满足后续虚拟实验要求。"
+    },
+    {
+      "id": "operation_vacuum",
+      "category": "气氛准备",
+      "title": "抽真空",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "vacuum_started",
+        "vacuum_completed"
+      ],
+      "mechanism_summary": "通过抽真空降低系统内残余空气含量，为氮气置换和热失控产气采集建立可控初始气氛。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "正在进行抽真空操作。该阶段以气氛准备为主，未触发新的化学反应。",
+      "teaching_focus": [
+        "理解残余空气对氧含量和气体浓度计算的影响",
+        "理解抽真空与氮气置换的先后顺序"
+      ],
+      "report_text": "完成实验系统抽真空，降低系统内残余空气影响。"
+    },
+    {
+      "id": "operation_nitrogen_purge",
+      "category": "气氛准备",
+      "title": "氮气置换进行中",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "nitrogen_valve_open",
+        "nitrogen_filling"
+      ],
+      "mechanism_summary": "氮气正在置换实验系统内残余空气，以建立惰性初始气氛。本阶段不代表电池发生化学反应。",
+      "equations": [],
+      "main_gases": [
+        "N₂"
+      ],
+      "display_message": "氮气置换进行中。当前气体流动属于装置气氛调节，不属于热失控产气。",
+      "teaching_focus": [
+        "区分置换气体与热失控产物",
+        "理解惰性气氛对气体采集和机理分析的作用"
+      ],
+      "report_text": "开启氮气阀并进行系统置换，以建立虚拟惰性初始气氛。"
+    },
+    {
+      "id": "operation_nitrogen_purge_completed",
+      "category": "气氛准备",
+      "title": "氮气置换完成",
+      "temperature_range": "环境温度",
+      "trigger_states": [
+        "nitrogen_purge_completed"
+      ],
+      "mechanism_summary": "氮气置换完成，系统具备启动 ARC 热失控教学演示的初始条件。",
+      "equations": [],
+      "main_gases": [
+        "N₂"
+      ],
+      "display_message": "氮气置换已完成。关闭氮气阀后，当前作用连接应停止高亮。",
+      "teaching_focus": [
+        "确认置换完成状态",
+        "区分置换完成与正在通气两种状态"
+      ],
+      "report_text": "氮气置换完成，实验系统进入热失控测试准备状态。"
+    },
+    {
+      "id": "reaction_stage_1",
+      "category": "化学反应",
+      "title": "第一阶段：SEI 膜分解与早期产气",
+      "temperature_range": "80～125 ℃",
+      "trigger_states": [
+        "arc_heating_started",
+        "sei_decomposition"
+      ],
+      "mechanism_summary": "SEI 膜开始分解，并与微量水及 HF 发生反应，早期产气以 CO₂ 和 C₂H₄ 为主，同时可能伴随少量 O₂。",
+      "equations": [
+        {
+          "id": "S1-E1",
+          "reaction": "(CH₂OCO₂Li)₂ → Li₂CO₃ + C₂H₄ + CO₂ + 1/2O₂",
+          "description": "SEI 膜组分分解，生成碳酸锂、乙烯、二氧化碳及少量氧气。",
+          "gas_products": [
+            "C₂H₄",
+            "CO₂",
+            "O₂"
+          ]
+        },
+        {
+          "id": "S1-E2",
+          "reaction": "2ROCO₂Li + H₂O → 2ROH + Li₂CO₃ + CO₂",
+          "description": "有机锂盐与水反应并释放二氧化碳。",
+          "gas_products": [
+            "CO₂"
+          ]
+        },
+        {
+          "id": "S1-E3",
+          "reaction": "ROCO₂Li + HF → ROH + LiF + CO₂",
+          "description": "有机锂盐与 HF 反应并释放二氧化碳。",
+          "gas_products": [
+            "CO₂"
+          ]
+        },
+        {
+          "id": "S1-E4",
+          "reaction": "Li₂CO₃ + 2HF → 2LiF + CO₂ + H₂O",
+          "description": "碳酸锂与 HF 反应，生成氟化锂并释放二氧化碳。",
+          "gas_products": [
+            "CO₂"
+          ]
+        }
+      ],
+      "main_gases": [
+        "CO₂",
+        "C₂H₄",
+        "少量 O₂"
+      ],
+      "display_message": "SEI 膜开始分解，CO₂ 和 C₂H₄ 是该阶段的主要代表性产气。",
+      "teaching_focus": [
+        "认识 SEI 膜的热稳定性",
+        "理解早期产气与温度上升之间的关系",
+        "识别 CO₂ 和 C₂H₄ 的来源"
+      ],
+      "report_text": "80～125 ℃阶段，SEI 膜发生分解并与水、HF 发生反应，主要产生 CO₂ 和 C₂H₄，并可能伴随少量 O₂。"
+    },
+    {
+      "id": "reaction_stage_2",
+      "category": "化学反应",
+      "title": "第二阶段：负极与电解液反应加速",
+      "temperature_range": "125～180 ℃",
+      "trigger_states": [
+        "electrolyte_reaction",
+        "separator_failure"
+      ],
+      "mechanism_summary": "SEI 膜进一步破坏，嵌锂负极与电解液直接接触，生成 CO 及多种烃类气体；正极与电解液反应开始增强。",
+      "equations": [
+        {
+          "id": "S2-E1",
+          "reaction": "C₃H₄O₃ + 2Li → Li₂CO₃ + C₂H₄",
+          "description": "碳酸酯类电解液与活性锂反应，生成乙烯。",
+          "gas_products": [
+            "C₂H₄"
+          ]
+        },
+        {
+          "id": "S2-E2",
+          "reaction": "C₄H₆O₃ + 2Li → Li₂CO₃ + C₃H₆",
+          "description": "电解液相关组分与活性锂反应，生成丙烯。",
+          "gas_products": [
+            "C₃H₆"
+          ]
+        },
+        {
+          "id": "S2-E3",
+          "reaction": "C₃H₆O₃ + 2Li → Li₂CO₃ + C₂H₆",
+          "description": "电解液相关组分与活性锂反应，生成乙烷。",
+          "gas_products": [
+            "C₂H₆"
+          ]
+        },
+        {
+          "id": "S2-E4",
+          "reaction": "C₄H₈O₃ + 2Li → Li₂CO₃ + C₃H₈",
+          "description": "电解液相关组分与活性锂反应，生成丙烷。",
+          "gas_products": [
+            "C₃H₈"
+          ]
+        },
+        {
+          "id": "S2-E5",
+          "reaction": "C₅H₁₀O₃ + 2Li → Li₂CO₃ + C₄H₁₀",
+          "description": "电解液相关组分与活性锂反应，生成丁烷。",
+          "gas_products": [
+            "C₄H₁₀"
+          ]
+        },
+        {
+          "id": "S2-E6",
+          "reaction": "2CO₂ + 2Li⁺ + 2e⁻ → Li₂CO₃ + CO",
+          "description": "二氧化碳发生还原反应并生成一氧化碳。",
+          "gas_products": [
+            "CO"
+          ]
+        }
+      ],
+      "main_gases": [
+        "CO₂",
+        "CO",
+        "C₂H₄",
+        "C₂H₆",
+        "C₃H₆",
+        "C₃H₈",
+        "C₄H₁₀"
+      ],
+      "display_message": "负极与电解液反应加速，CO 与多种可燃烃类气体开始明显增加。",
+      "teaching_focus": [
+        "理解 SEI 膜破坏后的界面反应",
+        "比较不同烃类气体的生成路径",
+        "认识 CO 和烃类增加对可燃风险的影响"
+      ],
+      "report_text": "125～180 ℃阶段，SEI 膜进一步破坏，嵌锂负极与电解液反应加速，生成 CO、C₂H₄、C₂H₆、C₃H₆、C₃H₈及C₄H₁₀等气体。"
+    },
+    {
+      "id": "reaction_stage_3",
+      "category": "化学反应",
+      "title": "第三阶段：快速热失控与剧烈产气",
+      "temperature_range": "180～225 ℃",
+      "trigger_states": [
+        "rapid_temperature_rise",
+        "thermal_runaway",
+        "venting"
+      ],
+      "mechanism_summary": "电解液和锂盐快速分解，正极释放活性氧并氧化电解液；负极和含氟组分持续反应，H₂、CH₄、CO、CO₂及其他可燃气体快速生成并喷放。",
+      "equations": [
+        {
+          "id": "S3-E1",
+          "reaction": "C₂H₅OCOOPF₄ → POF₃ + CO₂ + C₂H₅F",
+          "description": "含磷含氟中间体分解，生成 POF₃、CO₂ 和 C₂H₅F。",
+          "gas_products": [
+            "POF₃",
+            "CO₂",
+            "C₂H₅F"
+          ]
+        },
+        {
+          "id": "S3-E2",
+          "reaction": "C₂H₅OCOOPF₄ → POF₃ + CO₂ + C₂H₄ + HF",
+          "description": "含磷含氟中间体分解，生成 POF₃、CO₂、C₂H₄ 和 HF。",
+          "gas_products": [
+            "POF₃",
+            "CO₂",
+            "C₂H₄",
+            "HF"
+          ]
+        },
+        {
+          "id": "S3-E3",
+          "reaction": "C₂H₅OCOOPF₄ + HF → PF₄OH + CO₂ + C₂H₅F",
+          "description": "含氟中间体与 HF 进一步反应。",
+          "gas_products": [
+            "CO₂",
+            "C₂H₅F"
+          ]
+        },
+        {
+          "id": "S3-E4",
+          "reaction": "C₃H₄O₃ + 5/2O₂ → 3CO₂ + 2H₂O",
+          "description": "电解液相关组分被活性氧氧化，生成二氧化碳和水。",
+          "gas_products": [
+            "CO₂",
+            "H₂O"
+          ]
+        },
+        {
+          "id": "S3-E5",
+          "reaction": "C₄H₆O₃ + 4O₂ → 4CO₂ + 3H₂O",
+          "description": "电解液相关组分发生氧化反应。",
+          "gas_products": [
+            "CO₂",
+            "H₂O"
+          ]
+        },
+        {
+          "id": "S3-E6",
+          "reaction": "C₃H₆O₃ + 3O₂ → 3CO₂ + 3H₂O",
+          "description": "电解液相关组分发生氧化反应。",
+          "gas_products": [
+            "CO₂",
+            "H₂O"
+          ]
+        },
+        {
+          "id": "S3-E7",
+          "reaction": "C₃H₆O₃ + 2Li⁺ + 2e⁻ + H₂ → Li₂CO₃ + 2CH₄",
+          "description": "电解液相关组分发生还原反应并生成甲烷。",
+          "gas_products": [
+            "CH₄"
+          ]
+        },
+        {
+          "id": "S3-E8",
+          "reaction": "2Li + H₂O → Li₂O + H₂",
+          "description": "活性锂与水反应生成氢气。",
+          "gas_products": [
+            "H₂"
+          ]
+        },
+        {
+          "id": "S3-E9",
+          "reaction": "2Li + 2HF → 2LiF + H₂",
+          "description": "活性锂与 HF 反应生成氢气。",
+          "gas_products": [
+            "H₂"
+          ]
+        },
+        {
+          "id": "S3-E10",
+          "reaction": "C + 1/2O₂ → CO",
+          "description": "碳材料不完全氧化生成一氧化碳。",
+          "gas_products": [
+            "CO"
+          ]
+        },
+        {
+          "id": "S3-E11",
+          "reaction": "C + O₂ → CO₂",
+          "description": "碳材料完全氧化生成二氧化碳。",
+          "gas_products": [
+            "CO₂"
+          ]
+        }
+      ],
+      "main_gases": [
+        "CO₂",
+        "CO",
+        "H₂",
+        "CH₄",
+        "C₂H₄",
+        "其他烃类",
+        "HF",
+        "POF₃",
+        "C₂H₅F"
+      ],
+      "display_message": "进入快速热失控阶段，H₂、CH₄、CO 和烃类气体快速增加，并伴随 HF、POF₃ 等含氟产物。",
+      "teaching_focus": [
+        "理解快速温升与剧烈产气之间的关系",
+        "认识活性氧、电解液分解和含氟组分反应",
+        "理解 H₂、CH₄ 和 CO 对混合气体可燃性的贡献",
+        "识别 HF、POF₃ 等有害气体的教学风险提示"
+      ],
+      "report_text": "180～225 ℃阶段，电解液和锂盐快速分解，正极释放的活性氧促进电解液氧化，负极持续生成 H₂、CH₄、CO 和其他可燃气体，并伴随 HF、POF₃ 和 C₂H₅F 等产物。"
+    },
+    {
+      "id": "reaction_stage_4",
+      "category": "化学反应",
+      "title": "第四阶段：高温残余反应与燃烧",
+      "temperature_range": "225 ℃以上",
+      "trigger_states": [
+        "high_temperature_reaction",
+        "combustion"
+      ],
+      "mechanism_summary": "石墨、粘合剂、活性锂及固体残余物继续发生反应；当喷出气体与空气接触时，可能发生完全或不完全燃烧。",
+      "equations": [
+        {
+          "id": "S4-E1",
+          "reaction": "–CH₂–CF₂– + Li → LiF + –CH=CF– + 1/2H₂",
+          "description": "含氟粘结剂与活性锂反应，生成氟化锂并释放氢气。",
+          "gas_products": [
+            "H₂"
+          ]
+        },
+        {
+          "id": "S4-E2",
+          "reaction": "CMC–OH + Li → CMC–OLi + 1/2H₂",
+          "description": "CMC 官能团与活性锂反应并释放氢气。",
+          "gas_products": [
+            "H₂"
+          ]
+        },
+        {
+          "id": "S4-E3",
+          "reaction": "Li₂CO₃ + C → Li₂O + 2CO",
+          "description": "碳酸锂与碳在高温下反应，生成一氧化碳。",
+          "gas_products": [
+            "CO"
+          ]
+        },
+        {
+          "id": "S4-E4",
+          "reaction": "2Li + H₂O → Li₂O + H₂",
+          "description": "残余活性锂与水反应生成氢气。",
+          "gas_products": [
+            "H₂"
+          ]
+        },
+        {
+          "id": "S4-E5",
+          "reaction": "2Li + 2HF → 2LiF + H₂",
+          "description": "残余活性锂与 HF 反应生成氢气。",
+          "gas_products": [
+            "H₂"
+          ]
+        },
+        {
+          "id": "S4-E6",
+          "reaction": "C + 1/2O₂ → CO",
+          "description": "缺氧条件下碳材料不完全燃烧生成一氧化碳。",
+          "gas_products": [
+            "CO"
+          ]
+        },
+        {
+          "id": "S4-E7",
+          "reaction": "C + O₂ → CO₂",
+          "description": "氧气较充足时碳材料完全燃烧生成二氧化碳。",
+          "gas_products": [
+            "CO₂"
+          ]
+        }
+      ],
+      "main_gases": [
+        "H₂",
+        "CO",
+        "CO₂",
+        "未完全反应的烃类气体"
+      ],
+      "display_message": "高温残余反应持续进行，H₂、CO 和 CO₂ 仍可生成；喷出物接触空气后可能发生完全或不完全燃烧。",
+      "teaching_focus": [
+        "认识粘结剂和固体残余物的高温反应",
+        "比较完全燃烧与不完全燃烧的产物差异",
+        "理解氧气条件对 CO 和 CO₂ 比例的影响"
+      ],
+      "report_text": "225 ℃以上，石墨、粘合剂、活性锂及固体残余物继续反应，主要产生 H₂、CO 和 CO₂；喷出物接触空气后可能发生完全或不完全燃烧。"
+    },
+    {
+      "id": "operation_cooling",
+      "category": "装置操作",
+      "title": "冷却与稳定",
+      "temperature_range": "热失控后降温阶段",
+      "trigger_states": [
+        "cooling"
+      ],
+      "mechanism_summary": "热失控主体反应逐渐减弱，系统进入冷却和气体稳定阶段。本阶段重点是确认温度、压力和采样条件。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "系统正在冷却。当前阶段以状态稳定和采样准备为主。",
+      "teaching_focus": [
+        "确认温度与压力进入可采样状态",
+        "避免将冷却过程误判为新的主要反应阶段"
+      ],
+      "report_text": "热失控后系统进入冷却与稳定阶段，为气体采样和分析做准备。"
+    },
+    {
+      "id": "operation_sampling",
+      "category": "气体采集",
+      "title": "打开采样阀与气体采集",
+      "temperature_range": "冷却后采样阶段",
+      "trigger_states": [
+        "sampling_valve_open",
+        "sampling"
+      ],
+      "mechanism_summary": "打开采样阀，将热失控产生的混合气体导入采样袋。该阶段主要发生气体输运，不引入新的热失控反应方程式。",
+      "equations": [],
+      "main_gases": [
+        "H₂",
+        "CO",
+        "CO₂",
+        "CH₄",
+        "C₂H₄",
+        "C₂H₆",
+        "其他烃类"
+      ],
+      "display_message": "采样阀已打开，混合气体正在进入采样袋。当前阶段以气体输运为主。",
+      "teaching_focus": [
+        "理解代表性采样的重要性",
+        "区分气体生成阶段与气体采集阶段",
+        "确认采样阀完成状态同步更新"
+      ],
+      "report_text": "打开采样阀，将热失控混合气体导入采样袋。"
+    },
+    {
+      "id": "operation_sampling_completed",
+      "category": "气体采集",
+      "title": "气体采样完成",
+      "temperature_range": "冷却后采样阶段",
+      "trigger_states": [
+        "sampling_completed"
+      ],
+      "mechanism_summary": "混合气体样品已完成采集，可进入气相色谱和质谱分析流程。",
+      "equations": [],
+      "main_gases": [
+        "待 GC-MS 教学分析确认"
+      ],
+      "display_message": "采样完成。样品将进入气相色谱仪和质谱仪进行组分分析。",
+      "teaching_focus": [
+        "确认采样步骤已完成",
+        "理解采样袋与分析仪器之间的连接关系"
+      ],
+      "report_text": "完成热失控气体采样，样品进入 GC-MS 教学分析流程。"
+    },
+    {
+      "id": "operation_gc",
+      "category": "仪器分析",
+      "title": "气相色谱分离",
+      "temperature_range": "仪器分析阶段",
+      "trigger_states": [
+        "gc_analysis"
+      ],
+      "mechanism_summary": "气相色谱仪根据不同气体组分在色谱柱中的保留行为完成分离。本阶段属于物理分离和仪器分析，不产生新的热失控化学反应。",
+      "equations": [],
+      "main_gases": [
+        "H₂",
+        "CO",
+        "CO₂",
+        "CH₄",
+        "C₂H₄",
+        "C₂H₆",
+        "C₃H₆",
+        "C₃H₈",
+        "C₄H₁₀"
+      ],
+      "display_message": "气相色谱仪正在分离混合气体组分，未触发新的化学反应。",
+      "teaching_focus": [
+        "理解气相色谱分离功能",
+        "认识保留时间与组分分离的教学意义"
+      ],
+      "report_text": "使用气相色谱仪对采集的混合气体进行分离。"
+    },
+    {
+      "id": "operation_ms",
+      "category": "仪器分析",
+      "title": "质谱识别",
+      "temperature_range": "仪器分析阶段",
+      "trigger_states": [
+        "ms_analysis"
+      ],
+      "mechanism_summary": "质谱仪根据质荷比信息对色谱分离后的组分进行教学识别，不代表热失控反应继续进行。",
+      "equations": [],
+      "main_gases": [
+        "根据质谱特征进行教学识别"
+      ],
+      "display_message": "质谱仪正在识别气体组分。该阶段属于仪器检测，不产生新的反应方程式。",
+      "teaching_focus": [
+        "理解质谱识别功能",
+        "理解 GC 与 MS 的分工及联用关系"
+      ],
+      "report_text": "使用质谱仪对色谱分离后的气体组分进行教学识别。"
+    },
+    {
+      "id": "operation_data_analysis",
+      "category": "数据处理",
+      "title": "电脑数据分析与组分确认",
+      "temperature_range": "数据分析阶段",
+      "trigger_states": [
+        "computer_analysis",
+        "composition_confirmed"
+      ],
+      "mechanism_summary": "电脑接收 GC-MS 和 DAQ 数据采集仪结果，完成气体组分、相对含量及热失控阶段的关联分析。",
+      "equations": [],
+      "main_gases": [
+        "H₂",
+        "CO",
+        "CO₂",
+        "CH₄",
+        "C₂H₄",
+        "C₂H₆",
+        "其他烃类"
+      ],
+      "display_message": "正在关联温度、压力、电压及气体组分数据，形成实验一的产气成分分析结果。",
+      "teaching_focus": [
+        "建立温度阶段与气体组分之间的关联",
+        "识别主要可燃组分和惰性/氧化性组分",
+        "为 LFL_mix 计算准备组分数据"
+      ],
+      "report_text": "电脑汇总 GC-MS 与 DAQ 数据采集仪结果，完成热失控产气组分教学分析。"
+    },
+    {
+      "id": "operation_lfl",
+      "category": "可燃风险计算",
+      "title": "混合气体可燃下限计算",
+      "temperature_range": "计算阶段",
+      "trigger_states": [
+        "lfl_calculation"
+      ],
+      "mechanism_summary": "根据实验一获得的可燃气体组成，采用教学模型估算混合气体可燃下限 LFL_mix。本阶段属于数据计算，不发生新的化学反应。",
+      "equations": [
+        {
+          "id": "LFL-E1",
+          "reaction": "1 / LFL_mix = Σ(yᵢ / LFLᵢ)",
+          "description": "使用可燃组分归一化体积分数 yᵢ 和各组分可燃下限 LFLᵢ 进行混合气体 LFL_mix 教学估算。",
+          "gas_products": []
+        }
+      ],
+      "main_gases": [
+        "参与计算的可燃组分"
+      ],
+      "display_message": "正在根据可燃气体组成估算混合气体可燃下限 LFL_mix。",
+      "teaching_focus": [
+        "区分总气体组分和参与 LFL_mix 计算的可燃组分",
+        "理解不同组分对混合气体可燃性的贡献",
+        "明确计算结果仅用于虚拟仿真教学"
+      ],
+      "report_text": "根据实验一获得的可燃气体组成，计算混合气体可燃下限 LFL_mix。"
+    },
+    {
+      "id": "operation_risk",
+      "category": "可燃风险计算",
+      "title": "虚拟场景可燃风险评价",
+      "temperature_range": "计算阶段",
+      "trigger_states": [
+        "risk_assessment"
+      ],
+      "mechanism_summary": "根据产气量、实验舱体积及通风状态估算空间浓度 C，并计算风险比值 R = C / LFL_mix。",
+      "equations": [
+        {
+          "id": "RISK-E1",
+          "reaction": "C = V_gas,retained / V_space × 100%",
+          "description": "根据虚拟场景中的滞留气体体积与空间体积估算空间浓度。",
+          "gas_products": []
+        },
+        {
+          "id": "RISK-E2",
+          "reaction": "R = C / LFL_mix",
+          "description": "使用空间浓度与混合气体可燃下限的比值进行教学风险评价。",
+          "gas_products": []
+        }
+      ],
+      "main_gases": [
+        "参与空间浓度和风险评价的混合气体"
+      ],
+      "display_message": "正在比较空间浓度 C 与 LFL_mix，生成虚拟场景可燃风险等级。",
+      "teaching_focus": [
+        "理解小空间会提高空间浓度",
+        "理解通风良好可降低气体滞留",
+        "掌握风险比值 R = C / LFL_mix 的含义"
+      ],
+      "report_text": "结合虚拟实验舱体积和通风条件，计算空间浓度 C、风险比值 R，并完成可燃风险教学评价。"
+    },
+    {
+      "id": "operation_report",
+      "category": "结果汇总",
+      "title": "实验报告生成",
+      "temperature_range": "结果汇总阶段",
+      "trigger_states": [
+        "report_generation"
+      ],
+      "mechanism_summary": "汇总实验一的热失控产气组分、阶段反应机理，以及实验二的 LFL_mix 和虚拟场景风险评价结果。",
+      "equations": [],
+      "main_gases": [],
+      "display_message": "正在汇总实验过程、阶段方程式、组分分析和可燃风险评价结果。",
+      "teaching_focus": [
+        "形成完整实验记录",
+        "比较两个实验部分之间的数据承接关系",
+        "反思操作规范、数据质量和实验结论"
+      ],
+      "report_text": "完成实验一和实验二的数据、机理、计算、评分及结论汇总。"
+    }
+  ],
+  "fallback": {
+    "title": "当前交互阶段",
+    "category": "状态说明",
+    "mechanism_summary": "当前操作以装置控制或数据处理为主，未匹配到新的热失控化学反应。",
+    "equations": [],
+    "main_gases": [],
+    "display_message": "当前阶段未触发新的化学反应方程式。",
+    "report_text": "该阶段主要完成装置操作或数据处理。"
+  }
+}

@@ -1,0 +1,11 @@
+ref_id,title,authors,journal,year,doi,data_type,relation_to_platform,notes
+LR001,方壳磷酸铁锂锂离子电池热失控不同阶段产热产气机理研究,曾垂辉等,储能科学与技术,2026,10.19799/j.cnki.2095-4239.2026.0036,产气组成+热失控节点,文献装置模式数据来源；表1电池参数/表2关键节点/表3阶段产气,"用户提供DOI和部分数据；gc_composition表3数值待补充"
+LR002,Experimental study on the lower explosion limit of vent gases from lithium-ion battery thermal runaway,,Journal of Loss Prevention in the Process Industries,2019,10.1016/j.jlp.2019.103992,实验LEL标签,实验可燃下限测量参考；FRTA仪器/ASTM E681-2009,"15个LEL标签；3组具有完整气体组成"
+LR003,Thermal runaway gas composition analysis of LFP and NCM lithium-ion batteries,,Electronics,2023,10.3390/electronics12071603,产气组成,产气组成数据来源参考,NCM/LFP热失控气体分析
+LR004,Flammability characteristics of vent gases from lithium-ion batteries during thermal runaway,,Journal of Energy Storage,2019,10.1016/j.est.2019.100775,可燃性特性,NCA/LFP可燃性特性数据来源参考,
+LR005,In-situ analysis of explosion limits of lithium-ion battery thermal runaway vent gases,,Journal of Energy Storage,2022,10.1016/j.est.2022.106146,爆炸极限分析,原位爆炸极限分析方法参考,
+LR006,Experimental study on explosion hazards of lithium-ion battery vent gases,,Fuel,2024,10.1016/j.fuel.2024.132818,爆炸危害实验,爆炸危害实验方法参考,
+LR007,Flammability limits of battery vent gases under different initial conditions,,ACS Omega,2020,10.1021/acsomega.0c03713,可燃极限,不同初始条件下可燃极限参考,
+LR008,Effect of state of charge on explosion limits of lithium-ion battery vent gases,,Journal of Energy Storage,2021,10.1016/j.est.2021.103759,爆炸极限-SOC影响,SOC对爆炸极限影响参考,
+LR009,Le Chatelier混合规则标准,ISO/TC 58,Gas mixtures - Determination of fire potential and oxidizing ability,2017,ISO 10156:2017,计算标准,Le Chatelier混合规则国际标准依据,
+LR010,Flammability Characteristics of Combustible Gases and Vapors,Zabetakis M.G.,U.S. Bureau of Mines Bulletin 627,1965,,可燃性数据汇编,单组分可燃极限和温度/压力修正经典参考,SFPE Handbook引用

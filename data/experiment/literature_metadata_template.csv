@@ -1,0 +1,2 @@
+literature_id,title,authors,journal,year,doi,experiment_type,battery_type,cell_format,chemistry,nominal_capacity,notes,data_status
+pending_lit,,,,,,,,,,,,pending_extraction

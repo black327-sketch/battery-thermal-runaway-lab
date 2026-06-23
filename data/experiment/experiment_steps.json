@@ -1,0 +1,10 @@
+[
+  {"id": "sample_preparation", "label": "电池准备", "source_type": "teaching_simulation"},
+  {"id": "arc_setup", "label": "20 L 密封气体收集罐 / 实验系统准备", "source_type": "teaching_simulation"},
+  {"id": "atmosphere_replacement", "label": "抽真空 / 氮气置换三轮", "source_type": "teaching_simulation"},
+  {"id": "arc_heating", "label": "ARC 热失控虚拟流程", "source_type": "teaching_interpolation"},
+  {"id": "gas_sampling", "label": "冷却后集气袋采样", "source_type": "teaching_simulation"},
+  {"id": "gc_analysis", "label": "GC 气体组成分析", "source_type": "teaching_simulation"},
+  {"id": "lel_risk", "label": "LFL 可燃风险教学评价", "source_type": "teaching_simulation"},
+  {"id": "report", "label": "实验评分与报告生成", "source_type": "teaching_simulation"}
+]

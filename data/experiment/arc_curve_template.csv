@@ -1,0 +1,2 @@
+curve_id,literature_id,sample_id,soc_pct,time_s,temperature_c,heating_rate_c_per_min,phase,source_type,source_location,notes
+pending_arc_curve,pending_lit,pending_sample,,,,,initial,pending_user_input,,待补充 ARC 曲线；插值曲线必须标 teaching_interpolation，不得标为 literature

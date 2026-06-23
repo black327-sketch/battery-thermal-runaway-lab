@@ -1,0 +1,11 @@
+﻿reaction_id,mechanism_id,stage_id,gas_component,reaction_equation,reactants,products,temperature_range_c,risk_meaning,visual_hint,source_location,source_type,notes
+rxn_001,mech_001,stage_02,CO2;(C2H4),(CH2OCO2Li)2 → Li2CO3 + C2H4 + CO2 + 1/2O2,(CH2OCO2Li)2,Li2CO3;C2H4;CO2;O2,80-120,早期产气和自加热启动,SEI膜破裂并释放CO2/C2H4气泡,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图2
+rxn_002,mech_005,stage_05,H2,2Li + H2O → Li2O + H2,Li;H2O,Li2O;H2,高温阶段,H2为可燃气体，提升燃爆风险,析锂层与水反应产生H2气泡,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图5
+rxn_003,mech_005,stage_05,H2,2Li + 2HF → 2LiF + H2,Li;HF,LiF;H2,高温阶段,H2增加且HF参与腐蚀性副反应,Li与HF反应释放H2,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图5
+rxn_004,mech_005,stage_05,H2,-CH2-CF2- + Li → LiF + -CH=CF- + 1/2H2,PVDF片段;Li,LiF;H2,高温阶段,粘结剂参与H2生成,粘结剂链断裂并释放H2,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图5
+rxn_005,mech_006,stage_05,CO2,C + O2 → CO2,C;O2,CO2,高温阶段,完全氧化产生CO2，可稀释可燃组分,碳材料与氧气完全反应,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图6
+rxn_006,mech_006,stage_05,CO,C + 1/2O2 → CO,C;O2,CO,高温阶段,CO为可燃有毒气体，提高危险性,氧气不足时生成CO,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图6
+rxn_007,mech_006,stage_05,CO,Li2CO3 + C → Li2O + 2CO,Li2CO3;C,Li2O;CO,高温阶段,高温下CO生成增加,碳酸锂与碳反应释放CO,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图6
+rxn_008,mech_004,stage_05,CO2,C3H4O3 + 5/2O2 → 3CO2 + 2H2O,C3H4O3;O2,CO2;H2O,150-330,电解液氧化产CO2并放热,电解液分子与活性氧反应,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图4
+rxn_009,mech_004,stage_05,C2H4,C3H4O3 + 2Li → Li2CO3 + C2H4,C3H4O3;Li,Li2CO3;C2H4,高温阶段,C2H4为可燃烃类气体,电解液与锂反应生成烯烃,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图4或图8
+rxn_010,mech_004,stage_05,C2H6,C3H6O3 + 2Li → Li2CO3 + C2H6,C3H6O3;Li,Li2CO3;C2H6,高温阶段,C2H6为可燃烃类气体,电解液与锂反应生成烷烃,锂离子电池热失控产物特性及危险性评估-二,pending_user_input,用于图8

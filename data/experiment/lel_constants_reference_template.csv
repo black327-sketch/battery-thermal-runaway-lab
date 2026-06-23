@@ -1,0 +1,12 @@
+component,lfl_vol_pct,ufl_vol_pct,standard_or_source,source_title,year,doi_or_url,temperature_c,pressure_kpa,applicability,source_type,notes
+H2,4.0,75.0,SFPE Handbook 5th Ed.,SFPE Handbook of Fire Protection Engineering,2016,,25,101.3,标准条件；适用于碳氢化合物-空气混合物,literature,权威消防工程手册
+CO,12.5,74.0,SFPE Handbook 5th Ed.,SFPE Handbook of Fire Protection Engineering,2016,,25,101.3,标准条件,literature,权威消防工程手册
+CH4,5.0,15.0,SFPE Handbook 5th Ed.,SFPE Handbook of Fire Protection Engineering,2016,,25,101.3,标准条件,literature,权威消防工程手册
+C2H4,2.75,28.6,Engineering Toolbox,Engineering Toolbox - Gases - Explosion and Flammability Concentration Limits,,https://www.engineeringtoolbox.com/explosive-concentration-limits-d_423.html,25,101.3,标准条件；LFL数值与部分手册存在±0.1差异,literature,工程参考来源；标记为medium confidence
+C2H6,3.0,12.4,Engineering Toolbox,Engineering Toolbox - Gases - Explosion and Flammability Concentration Limits,,https://www.engineeringtoolbox.com/explosive-concentration-limits-d_423.html,25,101.3,标准条件,literature,工程参考来源
+C3H8,2.1,9.5,DOE report; Engineering Toolbox,DOE Hydrogen and Fuel Cells Program / Engineering Toolbox,,,25,101.3,标准条件,literature,DOE报告与工程工具箱交叉验证
+C3H6,2.0,11.7,Engineering Toolbox,Engineering Toolbox - Gases - Explosion and Flammability Concentration Limits,,https://www.engineeringtoolbox.com/explosive-concentration-limits-d_423.html,25,101.3,标准条件,literature,标记为medium confidence；需进一步交叉验证
+C2H2,2.5,100.0,PHMSA; Engineering Toolbox,PHMSA Emergency Response Guidebook / Engineering Toolbox,,,25,101.3,LFL=2.5% UFL=100.0%可分解爆炸,literature,PHMSA和工程工具箱双重来源
+CO2,,,,,,,25,101.3,不可燃；惰性稀释剂,reference,不参与LFL_mix计算
+HF,,,,,,,25,101.3,不可燃；剧毒；不参与LFL_mix计算,reference,安全提示
+N2,,,,,,,25,101.3,不可燃；惰性稀释剂；不参与LFL_mix计算,reference,常规惰性气体

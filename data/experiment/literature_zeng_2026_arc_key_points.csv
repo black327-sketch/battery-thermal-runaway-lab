@@ -1,0 +1,6 @@
+point_id,literature_id,sample_id,soc_pct,phase,time_s,temperature_c,heating_rate_c_per_min,pressure_kpa,description,source_location,source_type,notes,vent_time_s,vent_temperature_c,voltage_drop_start_s,voltage_drop_end_s,thermal_runaway_time_s,max_heating_rate_c_per_s,max_temperature_c,thermal_runaway_observed
+zeng_2026_0soc_summary,zeng_2026_lfp_prismatic,zeng_2026_lfp_0soc,0,summary,570,125,,,0%SOC 喷阀但未热失控,Table 2,literature,电压下降时间 866-1021s；未热失控,570,125,866,1021,,,,false
+zeng_2026_25soc_summary,zeng_2026_lfp_prismatic,zeng_2026_lfp_25soc,25,summary,1007,229.6,108,,25%SOC 热失控关键节点,Table 2,literature,heating_rate_c_per_min 由 1.8℃/s 换算为 108℃/min,757,145,929,1010,1007,1.8,229.6,true
+zeng_2026_50soc_summary,zeng_2026_lfp_prismatic,zeng_2026_lfp_50soc,50,summary,959,250.0,720,,50%SOC 热失控关键节点,Table 2,literature,heating_rate_c_per_min 由 12.0℃/s 换算为 720℃/min,780,139,924,944,959,12.0,250.0,true
+zeng_2026_75soc_summary,zeng_2026_lfp_prismatic,zeng_2026_lfp_75soc,75,summary,930,282.6,1056,,75%SOC 热失控关键节点,Table 2,literature,heating_rate_c_per_min 由 17.6℃/s 换算为 1056℃/min,883,147,907,923,930,17.6,282.6,true
+zeng_2026_100soc_summary,zeng_2026_lfp_prismatic,zeng_2026_lfp_100soc,100,summary,726,349.4,1494,,100%SOC 热失控关键节点,Table 2,literature,heating_rate_c_per_min 由 24.9℃/s 换算为 1494℃/min,705,145,722,732,726,24.9,349.4,true

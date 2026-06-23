@@ -1,0 +1,2 @@
+formula_id,literature_id,sample_id,soc_pct,formula_name,formula_expression,parameter_name,parameter_symbol,parameter_value,parameter_unit,source_location,source_type,notes
+pending_gas_formula,pending_lit,pending_sample,,,,,,,,,pending_user_input,待补充文献产气量计算公式和参数；不输出正式产气量结果
