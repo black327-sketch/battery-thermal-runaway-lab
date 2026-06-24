@@ -298,7 +298,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
 
   function mountRoot() {{
     const previous = parentDocument.getElementById(rootId);
-    if (previous) return previous;  // Reuse existing root — no DOM flicker
+    if (previous) previous.remove();
     const template = document.getElementById('floatingAiCompanionTemplate');
     const root = template.content.firstElementChild.cloneNode(true);
     root.id = rootId;
@@ -316,16 +316,6 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
   boot.textContent = '(' + function(payload, mountedRootId, positionStorageKey, openStorageKey, progressSnapshotKey) {{
     const root = document.getElementById(mountedRootId);
     if (!root) return;
-    // Store fresh payload globally so subsequent re-renders can update in place
-    parentWindow.__floatingAiCompanionPayload__ = payload;
-    // If already initialized from a previous render, skip handler reattachment
-    if (root.dataset.floatingAiInitialized === '1') {{
-      applySavedPosition();
-      render();
-      repositionIntoViewport();
-      return;
-    }}
-    root.dataset.floatingAiInitialized = '1';
     const $ = (name) => root.querySelector(`[data-el="${{name}}"]`);
     const pet = $('pet');
     const panel = $('panel');
