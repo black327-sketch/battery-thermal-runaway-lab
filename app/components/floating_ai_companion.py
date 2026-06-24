@@ -149,7 +149,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
 </head>
 <body>
 <style id="floatingAiCompanionStyleSource">
-.floating-ai-root {{ position: fixed; left: auto; right: 24px; bottom: 24px; z-index: 2147483000; color: #213547; user-select: none; font-family: "Microsoft YaHei", Arial, sans-serif; }}
+.floating-ai-root {{ position: fixed; left: auto; right: 24px; bottom: 96px; z-index: 2147483000; color: #213547; user-select: none; font-family: "Microsoft YaHei", Arial, sans-serif; }}
 .floating-ai-root.dragging, .floating-ai-root.dragging * {{ user-select: none; cursor: grabbing !important; }}
 .floating-ai-pet {{ width:64px; height:64px; border:0; padding:0; border-radius:18px; background:#fff; box-shadow:0 8px 14px rgba(11,58,99,.16); cursor:grab; display:grid; place-items:center; touch-action:none; }}
 .floating-ai-pet:hover {{ box-shadow:0 10px 16px rgba(11,58,99,.2); }}
@@ -197,7 +197,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
 @keyframes pet-float {{ 0%,100% {{ transform: translateY(0); }} 50% {{ transform: translateY(-4px); }} }}
 @keyframes pet-blink {{ 0%, 92%, 100% {{ transform: scaleY(1); }} 95% {{ transform: scaleY(.1); }} }}
 @media (max-width: 760px) {{
-  .floating-ai-root {{ right: 12px; bottom: 12px; }}
+  .floating-ai-root {{ right: 12px; bottom: 88px; }}
   .floating-ai-panel {{ right:0; left:auto; bottom:76px; width:calc(100vw - 24px); }}
   .floating-ai-root.panel-right .floating-ai-panel {{ right:0; left:auto; }}
 }}
@@ -279,9 +279,9 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
   const data = {payload_json};
   const parentWindow = window.parent;
   const parentDocument = parentWindow.document;
-  const styleId = 'floating-ai-companion-style-v2';
+  const styleId = 'floating-ai-companion-style-v3';
   const rootId = 'floatingAiRoot-' + String(data.componentId || 'global').replace(/[^a-zA-Z0-9_-]/g, '');
-  const positionKey = 'floating-ai-companion-position-v2';
+  const positionKey = 'floating-ai-companion-position-v3';
   const openKey = 'floating-ai-companion-open-v2';
   const snapshotKey = 'battery-lab-progress-snapshot-v1';
 

@@ -101,6 +101,15 @@ thinking_enabled = false
 api_key = "sk-REPLACE_WITH_REAL_KEY"
 ```
 
-4. 部署后访问公网 URL，验证首页、二维实验台、AI 学伴、报告按需生成和 Word 下载。
+4. 同步 GitHub 更新后，在 Streamlit Cloud 执行一次 `Manage app` -> `Reboot app`。如果页面仍保留旧状态，再从页面菜单执行 `Clear cache` / `Rerun`。
+5. 如果 AI 学伴显示本地兜底或连接失败，优先检查 Cloud Secrets，而不是本地 `.streamlit/secrets.toml`。Cloud 不会读取未上传的本地密钥文件。
+6. 部署后访问公网 URL，验证首页、二维实验台、AI 学伴、报告按需生成和 Word 下载。
+
+同步后页面效果差时，先按这个顺序排查：
+
+1. `Manage app` -> `Reboot app`，确保 Cloud 重新构建并清掉旧进程内存。
+2. Cloud Secrets 中确认 `[deepseek].api_key` 和 `[ai_companion]` 配置存在，且 `thinking_enabled = false`、`use_proxy = false`。
+3. 浏览器端强制刷新，或清理该站点缓存，避免旧的 AI 学伴位置缓存继续生效。
+4. 查看 Cloud Logs。如果出现资源限制、依赖安装失败、DeepSeek 401/429/5xx 或超时，再按日志处理。
 
 该方案适合临时分享。正式课堂演示优先使用国内云服务器，便于访问速度、HTTPS、Nginx WebSocket 和服务自恢复控制。

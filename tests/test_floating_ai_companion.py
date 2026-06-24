@@ -51,7 +51,9 @@ def test_floating_companion_has_drag_and_position_persistence():
     assert "pointermove" in html
     assert "pointerup" in html
     assert "localStorage" in html
-    assert "floating-ai-companion-position-v2" in html
+    assert "floating-ai-companion-position-v3" in html
+    assert "bottom: 96px" in html
+    assert "bottom: 88px" in html
     assert "clamp(" in html
     assert "viewportWidth()" in html
     assert "viewportHeight()" in html
