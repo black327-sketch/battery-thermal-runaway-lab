@@ -24,7 +24,7 @@ def _deepseek_secrets(api_key: str = "sk-test-valid-key") -> dict:
             "enabled": True,
             "base_url": "https://api.deepseek.com",
             "model": "deepseek-v4-flash",
-            "timeout_seconds": 12,
+            "timeout_seconds": 30,
             "max_tokens": 900,
             "temperature": 0.3,
             "fallback_to_local": True,
@@ -105,7 +105,7 @@ def test_streamlit_secrets_enable_deepseek_by_default_without_leaking_key():
     assert provider["mode"] == DEEPSEEK_MODE
     assert provider["base_url"] == "https://api.deepseek.com"
     assert provider["model"] == "deepseek-v4-flash"
-    assert provider["timeout_seconds"] == 12
+    assert provider["timeout_seconds"] == 30
     assert provider["max_tokens"] == 900
     assert provider["temperature"] == 0.3
     assert "api_key" not in provider
@@ -198,7 +198,7 @@ def test_deepseek_success_uses_openai_compatible_payload(monkeypatch):
     assert captured["body"]["model"] == "deepseek-v4-flash"
     assert captured["body"]["max_tokens"] == 900
     assert captured["body"]["temperature"] == 0.3
-    assert captured["timeout"] == 12
+    assert captured["timeout"] == 30
     assert captured["use_proxy"] is False
     assert captured["auth"] == "Bearer sk-valid-for-request"
     assert "不应上传" not in text

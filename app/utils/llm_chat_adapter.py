@@ -8,12 +8,16 @@ the local teaching rule base.
 from __future__ import annotations
 
 import json
+import logging
 import os
 import socket
+import time
 import urllib.error
 import urllib.request
 from collections.abc import Mapping
 from typing import Any, Iterator
+
+logger = logging.getLogger(__name__)
 
 from app.utils.teaching_ai_assistant import AssistantContext, answer_question
 
@@ -37,11 +41,13 @@ DEFAULT_AI_COMPANION_CONFIG: dict[str, Any] = {
     "enabled": True,
     "base_url": "https://api.deepseek.com",
     "model": "deepseek-v4-flash",
-    "timeout_seconds": 12.0,
+    "timeout_seconds": 30.0,
     "max_tokens": 900,
     "temperature": 0.3,
     "fallback_to_local": True,
     "use_proxy": False,
+    "max_retries": 2,
+    "retry_base_delay_seconds": 1.0,
 }
 
 PLACEHOLDER_KEY_MARKERS = (
@@ -188,6 +194,48 @@ def _open_url(request: urllib.request.Request, *, timeout: float, use_proxy: boo
         return urllib.request.urlopen(request, timeout=timeout)  # nosec - user-configured endpoint
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
     return opener.open(request, timeout=timeout)
+
+
+# Error types that are safe to retry (transient / network-level)
+_RETRYABLE_EXCEPTIONS: tuple[type[BaseException], ...] = (
+    socket.timeout,
+    TimeoutError,
+    urllib.error.URLError,
+    OSError,
+    json.JSONDecodeError,
+)
+
+
+def _call_api_with_retry(
+    request: urllib.request.Request,
+    *,
+    timeout: float,
+    use_proxy: bool,
+    max_retries: int = 2,
+    base_delay: float = 1.0,
+) -> Any:
+    """Call the chat API with exponential backoff on transient errors.
+
+    HTTPError (401/402/429 etc.) is **not** retried — the server has already
+    responded and the error is semantic, not transient.
+    """
+    last_error: BaseException | None = None
+    for attempt in range(max_retries + 1):
+        try:
+            with _open_url(request, timeout=timeout, use_proxy=use_proxy) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError:
+            raise  # never retry HTTP-level errors
+        except _RETRYABLE_EXCEPTIONS as exc:
+            last_error = exc
+            if attempt < max_retries:
+                delay = base_delay * (2 ** attempt)
+                logger.debug(
+                    "chat API retry %d/%d after %.1fs (%s: %s)",
+                    attempt + 1, max_retries, delay, type(exc).__name__, str(exc)[:120],
+                )
+                time.sleep(delay)
+    raise last_error  # type: ignore[misc]
 
 
 def _extract_chat_content(data: Mapping[str, Any]) -> str:
@@ -440,9 +488,16 @@ def answer_with_optional_llm(
         method="POST",
     )
     request_timeout = float(timeout if timeout is not None else provider.get("timeout_seconds", DEFAULT_AI_COMPANION_CONFIG["timeout_seconds"]))
+    max_retries = int(provider.get("max_retries", DEFAULT_AI_COMPANION_CONFIG["max_retries"]))
+    base_delay = float(provider.get("retry_base_delay_seconds", DEFAULT_AI_COMPANION_CONFIG["retry_base_delay_seconds"]))
     try:
-        with _open_url(request, timeout=request_timeout, use_proxy=bool(provider.get("use_proxy", False))) as response:
-            data = json.loads(response.read().decode("utf-8"))
+        data = _call_api_with_retry(
+            request,
+            timeout=request_timeout,
+            use_proxy=bool(provider.get("use_proxy", False)),
+            max_retries=max_retries,
+            base_delay=base_delay,
+        )
         external = _extract_chat_content(data)
         return {
             "mode": provider["mode"],
@@ -527,23 +582,41 @@ def stream_answer_with_optional_llm(
         method="POST",
     )
     request_timeout = float(timeout if timeout is not None else provider.get("timeout_seconds", DEFAULT_AI_COMPANION_CONFIG["timeout_seconds"]))
+    max_retries = int(provider.get("max_retries", DEFAULT_AI_COMPANION_CONFIG["max_retries"]))
+    base_delay = float(provider.get("retry_base_delay_seconds", DEFAULT_AI_COMPANION_CONFIG["retry_base_delay_seconds"]))
+    use_proxy = bool(provider.get("use_proxy", False))
     chunks: list[str] = []
     try:
-        with _open_url(request, timeout=request_timeout, use_proxy=bool(provider.get("use_proxy", False))) as response:
-            for raw_line in response:
-                line = raw_line.decode("utf-8", errors="replace").strip()
-                if not line.startswith("data:"):
-                    continue
-                data_text = line[5:].strip()
-                if data_text == "[DONE]":
-                    break
-                try:
-                    piece = _extract_stream_delta(json.loads(data_text))
-                except json.JSONDecodeError:
-                    continue
-                if piece:
-                    chunks.append(piece)
-                    yield piece
+        # Retry loop for initial stream connection (transient errors only)
+        for attempt in range(max_retries + 1):
+            try:
+                with _open_url(request, timeout=request_timeout, use_proxy=use_proxy) as response:
+                    for raw_line in response:
+                        line = raw_line.decode("utf-8", errors="replace").strip()
+                        if not line.startswith("data:"):
+                            continue
+                        data_text = line[5:].strip()
+                        if data_text == "[DONE]":
+                            break
+                        try:
+                            piece = _extract_stream_delta(json.loads(data_text))
+                        except json.JSONDecodeError:
+                            continue
+                        if piece:
+                            chunks.append(piece)
+                            yield piece
+                break  # stream completed successfully
+            except urllib.error.HTTPError:
+                raise  # never retry HTTP errors
+            except _RETRYABLE_EXCEPTIONS as exc:
+                if attempt == max_retries:
+                    raise
+                delay = base_delay * (2 ** attempt)
+                logger.debug(
+                    "stream API retry %d/%d after %.1fs (%s)",
+                    attempt + 1, max_retries, delay, type(exc).__name__,
+                )
+                time.sleep(delay)
     except Exception:
         if not chunks:
             yield local_answer

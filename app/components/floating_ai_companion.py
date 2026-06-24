@@ -161,7 +161,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
 .floating-ai-head {{ display:flex; gap:10px; align-items:center; padding:10px 12px; background:#f8fbfe; border-bottom:1px solid #d9e4ef; }}
 .floating-ai-titlebox {{ min-width:0; display:flex; align-items:center; gap:8px; }}
 .floating-ai-title {{ font-weight:850; color:#0b3a63; font-size:15px; line-height:1.25; }}
-.floating-ai-online {{ width:8px; height:8px; border-radius:999px; background:var(--floating-ai-stroke); box-shadow:0 0 0 3px rgba(21,101,192,.12); flex:0 0 auto; }}
+.floating-ai-online {{ width:8px; height:8px; border-radius:999px; background:var(--floating-ai-stroke); box-shadow:0 0 0 3px rgba(21,101,192,.12); flex:0 0 auto; transition: background .4s; }}.floating-ai-online.connected {{ background:#2e7d32; box-shadow:0 0 0 3px rgba(46,125,50,.18); }}.floating-ai-online.fallback {{ background:#e6a817; box-shadow:0 0 0 3px rgba(230,168,23,.18); }}.floating-ai-online.offline {{ background:#c62828; box-shadow:0 0 0 3px rgba(198,40,40,.18); }}
 .floating-ai-meta, .floating-ai-tip {{ display:none; }}
 .floating-ai-actions {{ margin-left:auto; display:flex; gap:6px; }}
 .floating-ai-iconbtn {{ border:1px solid #d9e4ef; background:#fff; border-radius:8px; min-width:30px; height:30px; cursor:pointer; color:#213547; font-size:16px; line-height:1; }}
@@ -298,7 +298,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
 
   function mountRoot() {{
     const previous = parentDocument.getElementById(rootId);
-    if (previous) previous.remove();
+    if (previous) return previous;  // Reuse existing root — no DOM flicker
     const template = document.getElementById('floatingAiCompanionTemplate');
     const root = template.content.firstElementChild.cloneNode(true);
     root.id = rootId;
@@ -316,6 +316,16 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
   boot.textContent = '(' + function(payload, mountedRootId, positionStorageKey, openStorageKey, progressSnapshotKey) {{
     const root = document.getElementById(mountedRootId);
     if (!root) return;
+    // Store fresh payload globally so subsequent re-renders can update in place
+    parentWindow.__floatingAiCompanionPayload__ = payload;
+    // If already initialized from a previous render, skip handler reattachment
+    if (root.dataset.floatingAiInitialized === '1') {{
+      applySavedPosition();
+      render();
+      repositionIntoViewport();
+      return;
+    }}
+    root.dataset.floatingAiInitialized = '1';
     const $ = (name) => root.querySelector(`[data-el="${{name}}"]`);
     const pet = $('pet');
     const panel = $('panel');
@@ -346,7 +356,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
     const restartBtn = $('restart');
     const minBtn = $('min');
     const closeBtn = $('close');
-    let dragging = false, moved = false, sending = false, lastSubmitted = '', startX = 0, startY = 0, startLeft = 0, startTop = 0;
+    let dragging = false, moved = false, sending = false, lastSubmitted = '', startX = 0, startY = 0, startLeft = 0, startTop = 0, sendingTimeoutId = 0;
 
     function esc(s) {{ return String(s || '').replace(/[&<>"']/g, m => ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[m])); }}
     function clamp(n, min, max) {{ return Math.max(min, Math.min(max, n)); }}
@@ -396,7 +406,24 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
     }}
 
     function render() {{
+      // Clear the sending timeout guard — fresh data arrived from backend
+      if (sendingTimeoutId) {{ window.clearTimeout(sendingTimeoutId); sendingTimeoutId = 0; }}
+      sending = false;
+      send.disabled = false;
       const c = payload.context;
+      // Update connection status indicator
+      const online = $('online');
+      online.className = 'floating-ai-online';
+      if (c.mode.indexOf('DeepSeek') !== -1 || c.mode.indexOf('外接') !== -1) {{
+        online.classList.add('connected');
+        online.title = 'AI 服务已连接';
+      }} else if (c.mode.indexOf('兜底') !== -1 || c.mode.indexOf('回退') !== -1) {{
+        online.classList.add('fallback');
+        online.title = '已切换到本地知识模式';
+      }} else {{
+        online.classList.add('offline');
+        online.title = 'AI 服务未连接';
+      }}
       meta.textContent = `页面：${{c.page_name}} · 阶段：${{c.current_stage}} · SOC：${{c.current_soc}}`;
       tip.textContent = c.stage_tip || '';
       mode.textContent = `当前模式：${{c.mode}}`;
@@ -559,9 +586,35 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
         sending = true;
         send.disabled = true;
         renderCurrent(question, '正在生成回答...');
-        if (!postEvent('question', {{ question }})) return false;
-        return true;
+        // Retry postMessage up to 3 times with backoff delays
+        var retries = 0;
+        var maxPostRetries = 3;
+        var delays = [200, 500, 1000];
+        function tryPost() {{
+          if (postEvent('question', {{ question }})) {{
+            // Arm the 15 s timeout guard to auto-reset sending state
+            sendingTimeoutId = window.setTimeout(function() {{
+              if (sending) {{
+                sending = false;
+                send.disabled = false;
+                showToast('AI 响应超时，请重试。发送按钮已自动复位。', 4200);
+              }}
+            }}, 15000);
+            return true;
+          }}
+          retries++;
+          if (retries < maxPostRetries) {{
+            window.setTimeout(tryPost, delays[retries - 1]);
+          }} else {{
+            showToast('AI 通信暂时不可达，已使用本地知识回答。', 3200);
+            answerLocally(question);
+          }}
+          return false;
+        }}
+        return tryPost();
       }} catch (e) {{
+        showToast('发送失败，已使用本地知识回答。', 3200);
+        answerLocally(question);
         return false;
       }}
     }}
@@ -571,6 +624,7 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
       sending = false;
       send.disabled = false;
       const answer = pickLocalAnswer(question);
+      showToast('当前使用本地知识库回答。', 2500);
       payload.latestQuestion = question;
       payload.latestAnswer = answer;
       payload.history = (payload.history || []).concat([

@@ -33,7 +33,7 @@ def test_default_placeholder_secrets_resolve_to_local_fallback():
             "enabled": True,
             "base_url": "https://api.deepseek.com",
             "model": "deepseek-chat",
-            "timeout_seconds": 12,
+            "timeout_seconds": 30,
             "max_tokens": 900,
             "temperature": 0.3,
             "fallback_to_local": True,
