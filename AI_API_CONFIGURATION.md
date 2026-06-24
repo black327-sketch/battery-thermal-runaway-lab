@@ -21,6 +21,9 @@ max_tokens = 900
 temperature = 0.3
 fallback_to_local = true
 use_proxy = false
+max_retries = 2
+retry_base_delay_seconds = 1.0
+thinking_enabled = false
 ```
 
 当前 Key 状态：已配置真实值，长度 35，掩码 `sk-***c78`。不要把真实 Key 写入 `.py`、报告、截图、README 或测试输出。
@@ -35,6 +38,8 @@ ALL_PROXY = socks5://127.0.0.1:7897
 ```
 
 该代理端口拒绝连接，导致 `connection_error`。直连 `api.deepseek.com:443` 成功。适配器已默认 `use_proxy = false`，通过无代理 opener 发送 DeepSeek 请求。
+
+2026-06-24 补充：适配器会对 408、409、425、429、5xx 等瞬时错误进行短重试；DeepSeek V4 默认关闭 thinking mode，用于 AI 学伴即时问答，减少长推理带来的等待和多轮 reasoning_content 兼容问题。若 DeepSeek 返回空内容，也会明确回退本地规则并提示 DeepSeek 调用失败。
 
 ## 修改 API Key
 
@@ -100,6 +105,9 @@ $env:DEEPSEEK_API_KEY="你的 Key"
 $env:DEEPSEEK_BASE_URL="https://api.deepseek.com"
 $env:DEEPSEEK_MODEL="deepseek-v4-flash"
 $env:DEEPSEEK_USE_PROXY="false"
+$env:DEEPSEEK_MAX_RETRIES="2"
+$env:DEEPSEEK_RETRY_BASE_DELAY_SECONDS="1.0"
+$env:DEEPSEEK_THINKING_ENABLED="false"
 ```
 
 ## 配置优先级

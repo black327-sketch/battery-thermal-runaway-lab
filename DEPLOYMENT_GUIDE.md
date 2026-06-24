@@ -34,6 +34,9 @@ DEEPSEEK_BASE_URL=https://api.deepseek.com
 DEEPSEEK_MODEL=deepseek-v4-flash
 DEEPSEEK_TIMEOUT_SECONDS=12
 DEEPSEEK_USE_PROXY=false
+DEEPSEEK_MAX_RETRIES=2
+DEEPSEEK_RETRY_BASE_DELAY_SECONDS=1.0
+DEEPSEEK_THINKING_ENABLED=false
 DEEPSEEK_API_KEY=sk-REPLACE_WITH_REAL_KEY
 ```
 
@@ -90,6 +93,9 @@ max_tokens = 900
 temperature = 0.3
 fallback_to_local = true
 use_proxy = false
+max_retries = 2
+retry_base_delay_seconds = 1.0
+thinking_enabled = false
 
 [deepseek]
 api_key = "sk-REPLACE_WITH_REAL_KEY"

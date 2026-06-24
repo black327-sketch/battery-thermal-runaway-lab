@@ -28,6 +28,9 @@ def _deepseek_secrets(api_key: str = "sk-test-valid-key") -> dict:
             "max_tokens": 900,
             "temperature": 0.3,
             "fallback_to_local": True,
+            "max_retries": 2,
+            "retry_base_delay_seconds": 0,
+            "thinking_enabled": False,
         },
         "deepseek": {"api_key": api_key},
     }
@@ -108,6 +111,9 @@ def test_streamlit_secrets_enable_deepseek_by_default_without_leaking_key():
     assert provider["timeout_seconds"] == 30
     assert provider["max_tokens"] == 900
     assert provider["temperature"] == 0.3
+    assert provider["max_retries"] == 2
+    assert provider["retry_base_delay_seconds"] == 0
+    assert provider["thinking_enabled"] is False
     assert "api_key" not in provider
     assert "sk-realistic-secret-value" not in str(provider)
 
@@ -126,6 +132,9 @@ def test_deepseek_env_used_when_secrets_absent():
     env = {
         "ENABLE_DEEPSEEK_CHAT": "true",
         "DEEPSEEK_API_KEY": "deepseek-key",
+        "DEEPSEEK_MAX_RETRIES": "4",
+        "DEEPSEEK_RETRY_BASE_DELAY_SECONDS": "0.2",
+        "DEEPSEEK_THINKING_ENABLED": "true",
         "ENABLE_EXTERNAL_LLM_CHAT": "true",
         "LLM_API_KEY": "generic-key",
         "LLM_BASE_URL": "https://example.test/v1",
@@ -139,6 +148,9 @@ def test_deepseek_env_used_when_secrets_absent():
     assert provider["base_url"] == "https://api.deepseek.com"
     assert provider["model"] == "deepseek-v4-flash"
     assert provider["mode"] == DEEPSEEK_MODE
+    assert provider["max_retries"] == 4
+    assert provider["retry_base_delay_seconds"] == 0.2
+    assert provider["thinking_enabled"] is True
     assert "deepseek-key" not in str(provider)
 
 
@@ -198,10 +210,61 @@ def test_deepseek_success_uses_openai_compatible_payload(monkeypatch):
     assert captured["body"]["model"] == "deepseek-v4-flash"
     assert captured["body"]["max_tokens"] == 900
     assert captured["body"]["temperature"] == 0.3
+    assert captured["body"]["thinking"] == {"type": "disabled"}
     assert captured["timeout"] == 30
     assert captured["use_proxy"] is False
     assert captured["auth"] == "Bearer sk-valid-for-request"
     assert "不应上传" not in text
+
+
+def test_deepseek_retries_transient_http_errors(monkeypatch):
+    attempts = {"count": 0}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+        def read(self):
+            return json.dumps({"choices": [{"message": {"content": "重试后连接成功"}}]}).encode("utf-8")
+
+    def fake_open_url(*args, **kwargs):
+        attempts["count"] += 1
+        if attempts["count"] == 1:
+            raise urllib.error.HTTPError("https://api.deepseek.com/chat/completions", 503, "busy", {}, None)
+        return FakeResponse()
+
+    monkeypatch.setattr("app.utils.llm_chat_adapter._open_url", fake_open_url)
+    result = answer_with_optional_llm(
+        "测试重试",
+        AssistantContext(),
+        secrets=_deepseek_secrets("sk-secret"),
+    )
+
+    assert attempts["count"] == 2
+    assert result["used_external"] is True
+    assert result["mode"] == DEEPSEEK_MODE
+
+
+def test_deepseek_empty_response_falls_back_with_message(monkeypatch):
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+        def read(self):
+            return json.dumps({"choices": [{"message": {"content": ""}}]}).encode("utf-8")
+
+    monkeypatch.setattr("app.utils.llm_chat_adapter._open_url", lambda *args, **kwargs: FakeResponse())
+    result = answer_with_optional_llm("实验目的是什么？", AssistantContext(), secrets=_deepseek_secrets("sk-secret"))
+
+    assert result["used_external"] is False
+    assert result["mode"] == "本地规则兜底模式：DeepSeek 调用失败"
+    assert result["error_category"] == "empty_response"
 
 
 def test_deepseek_failure_falls_back_without_leaking_key(monkeypatch):

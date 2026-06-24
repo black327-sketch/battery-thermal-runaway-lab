@@ -55,10 +55,12 @@ def read_config() -> dict[str, Any]:
         "enabled": ai.get("enabled", os.getenv("ENABLE_DEEPSEEK_CHAT", "").lower() == "true"),
         "provider": ai.get("provider", "deepseek"),
         "base_url": ai.get("base_url") or os.getenv("DEEPSEEK_BASE_URL") or "https://api.deepseek.com",
-        "model": ai.get("model") or os.getenv("DEEPSEEK_MODEL") or "deepseek-chat",
+        "model": ai.get("model") or os.getenv("DEEPSEEK_MODEL") or "deepseek-v4-flash",
         "api_key": deepseek.get("api_key") or ai.get("api_key") or os.getenv("DEEPSEEK_API_KEY") or "",
         "timeout_seconds": float(ai.get("timeout_seconds") or os.getenv("DEEPSEEK_TIMEOUT_SECONDS") or 12),
         "use_proxy": bool(ai.get("use_proxy", False)) or os.getenv("DEEPSEEK_USE_PROXY", "").lower() == "true",
+        "thinking_enabled": bool(ai.get("thinking_enabled", False))
+        or os.getenv("DEEPSEEK_THINKING_ENABLED", "").lower() == "true",
     }
 
 
@@ -109,6 +111,7 @@ def main() -> int:
         ],
         "temperature": 0,
         "max_tokens": 80,
+        "thinking": {"type": "enabled" if cfg["thinking_enabled"] else "disabled"},
     }
     request = urllib.request.Request(
         endpoint,

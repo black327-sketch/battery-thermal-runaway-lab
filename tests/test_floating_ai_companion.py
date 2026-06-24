@@ -75,6 +75,9 @@ def test_floating_companion_uses_backend_bridge_without_url_navigation():
     assert "submitToBackend(question)" in html
     assert "bridgeFrame.contentWindow.postMessage" in html
     assert "正在生成回答" in html
+    assert "tryPost();" in html
+    assert "return true;" in html
+    assert "45000" in html
     assert "buttonEl.click()" not in html
     assert "window.location.assign" not in html
 

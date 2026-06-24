@@ -48,6 +48,7 @@ DEFAULT_AI_COMPANION_CONFIG: dict[str, Any] = {
     "use_proxy": False,
     "max_retries": 2,
     "retry_base_delay_seconds": 1.0,
+    "thinking_enabled": False,
 }
 
 PLACEHOLDER_KEY_MARKERS = (
@@ -204,6 +205,7 @@ _RETRYABLE_EXCEPTIONS: tuple[type[BaseException], ...] = (
     OSError,
     json.JSONDecodeError,
 )
+_RETRYABLE_HTTP_STATUS = {408, 409, 425, 429, 500, 502, 503, 504}
 
 
 def _call_api_with_retry(
@@ -216,16 +218,24 @@ def _call_api_with_retry(
 ) -> Any:
     """Call the chat API with exponential backoff on transient errors.
 
-    HTTPError (401/402/429 etc.) is **not** retried — the server has already
-    responded and the error is semantic, not transient.
+    Auth, balance, and bad-request errors are not retried. Rate limits and
+    temporary server errors are retried because they are often transient.
     """
     last_error: BaseException | None = None
     for attempt in range(max_retries + 1):
         try:
             with _open_url(request, timeout=timeout, use_proxy=use_proxy) as response:
                 return json.loads(response.read().decode("utf-8"))
-        except urllib.error.HTTPError:
-            raise  # never retry HTTP-level errors
+        except urllib.error.HTTPError as exc:
+            if exc.code in _RETRYABLE_HTTP_STATUS and attempt < max_retries:
+                delay = base_delay * (2 ** attempt)
+                logger.debug(
+                    "chat API retry %d/%d after %.1fs (HTTP %s)",
+                    attempt + 1, max_retries, delay, exc.code,
+                )
+                time.sleep(delay)
+                continue
+            raise
         except _RETRYABLE_EXCEPTIONS as exc:
             last_error = exc
             if attempt < max_retries:
@@ -298,6 +308,12 @@ def _resolve_from_secrets(secrets: Mapping[str, Any] | None) -> dict[str, Any] |
         "temperature": _to_float(ai.get("temperature"), float(DEFAULT_AI_COMPANION_CONFIG["temperature"])),
         "fallback_to_local": fallback_to_local,
         "use_proxy": _to_bool(ai.get("use_proxy", DEFAULT_AI_COMPANION_CONFIG["use_proxy"]), False),
+        "max_retries": _to_int(ai.get("max_retries"), int(DEFAULT_AI_COMPANION_CONFIG["max_retries"])),
+        "retry_base_delay_seconds": _to_float(
+            ai.get("retry_base_delay_seconds"),
+            float(DEFAULT_AI_COMPANION_CONFIG["retry_base_delay_seconds"]),
+        ),
+        "thinking_enabled": _to_bool(ai.get("thinking_enabled", DEFAULT_AI_COMPANION_CONFIG["thinking_enabled"]), False),
     }
     if provider["enabled"]:
         return provider
@@ -314,6 +330,9 @@ def _resolve_from_secrets(secrets: Mapping[str, Any] | None) -> dict[str, Any] |
             "temperature": provider["temperature"],
             "fallback_to_local": True,
             "use_proxy": False,
+            "max_retries": provider["max_retries"],
+            "retry_base_delay_seconds": provider["retry_base_delay_seconds"],
+            "thinking_enabled": provider["thinking_enabled"],
         }
     return None
 
@@ -349,6 +368,12 @@ def _resolve_from_env(env: Mapping[str, str] | None) -> dict[str, Any]:
             "temperature": _to_float(env.get("DEEPSEEK_TEMPERATURE"), float(DEFAULT_AI_COMPANION_CONFIG["temperature"])),
             "fallback_to_local": True,
             "use_proxy": _truthy(env.get("DEEPSEEK_USE_PROXY")),
+            "max_retries": _to_int(env.get("DEEPSEEK_MAX_RETRIES"), int(DEFAULT_AI_COMPANION_CONFIG["max_retries"])),
+            "retry_base_delay_seconds": _to_float(
+                env.get("DEEPSEEK_RETRY_BASE_DELAY_SECONDS"),
+                float(DEFAULT_AI_COMPANION_CONFIG["retry_base_delay_seconds"]),
+            ),
+            "thinking_enabled": _truthy(env.get("DEEPSEEK_THINKING_ENABLED")),
         }
     if is_external_chat_enabled(env):
         return {
@@ -364,6 +389,12 @@ def _resolve_from_env(env: Mapping[str, str] | None) -> dict[str, Any]:
             "temperature": _to_float(env.get("LLM_TEMPERATURE"), float(DEFAULT_AI_COMPANION_CONFIG["temperature"])),
             "fallback_to_local": True,
             "use_proxy": _truthy(env.get("LLM_USE_PROXY")),
+            "max_retries": _to_int(env.get("LLM_MAX_RETRIES"), int(DEFAULT_AI_COMPANION_CONFIG["max_retries"])),
+            "retry_base_delay_seconds": _to_float(
+                env.get("LLM_RETRY_BASE_DELAY_SECONDS"),
+                float(DEFAULT_AI_COMPANION_CONFIG["retry_base_delay_seconds"]),
+            ),
+            "thinking_enabled": _truthy(env.get("LLM_THINKING_ENABLED")),
         }
     return {"enabled": False, "provider": "local", "mode": LOCAL_MODE, "source": "local_rules"}
 
@@ -478,6 +509,8 @@ def answer_with_optional_llm(
         "temperature": float(provider.get("temperature", DEFAULT_AI_COMPANION_CONFIG["temperature"])),
         "max_tokens": int(provider.get("max_tokens", DEFAULT_AI_COMPANION_CONFIG["max_tokens"])),
     }
+    if str(provider.get("provider", "")).lower() == "deepseek":
+        body["thinking"] = {"type": "disabled" if not provider.get("thinking_enabled") else "enabled"}
     request = urllib.request.Request(
         url,
         data=json.dumps(body).encode("utf-8"),
@@ -499,6 +532,14 @@ def answer_with_optional_llm(
             base_delay=base_delay,
         )
         external = _extract_chat_content(data)
+        if not external:
+            return {
+                "mode": _failure_mode(str(provider.get("provider", ""))),
+                "used_external": False,
+                "answer": local_answer,
+                "provider": "local",
+                "error_category": "empty_response",
+            }
         return {
             "mode": provider["mode"],
             "used_external": True,
@@ -572,6 +613,8 @@ def stream_answer_with_optional_llm(
         "max_tokens": int(provider.get("max_tokens", DEFAULT_AI_COMPANION_CONFIG["max_tokens"])),
         "stream": True,
     }
+    if str(provider.get("provider", "")).lower() == "deepseek":
+        body["thinking"] = {"type": "disabled" if not provider.get("thinking_enabled") else "enabled"}
     request = urllib.request.Request(
         url,
         data=json.dumps(body).encode("utf-8"),

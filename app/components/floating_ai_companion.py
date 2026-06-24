@@ -582,14 +582,14 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
         var delays = [200, 500, 1000];
         function tryPost() {{
           if (postEvent('question', {{ question }})) {{
-            // Arm the 15 s timeout guard to auto-reset sending state
+            // Keep this longer than the backend request timeout plus retries to avoid false timeout hints.
             sendingTimeoutId = window.setTimeout(function() {{
               if (sending) {{
                 sending = false;
                 send.disabled = false;
                 showToast('AI 响应超时，请重试。发送按钮已自动复位。', 4200);
               }}
-            }}, 15000);
+            }}, 45000);
             return true;
           }}
           retries++;
@@ -601,7 +601,8 @@ html, body {{ margin:0; padding:0; width:0; height:0; overflow:hidden; backgroun
           }}
           return false;
         }}
-        return tryPost();
+        tryPost();
+        return true;
       }} catch (e) {{
         showToast('发送失败，已使用本地知识回答。', 3200);
         answerLocally(question);
@@ -1005,7 +1006,7 @@ def render_floating_ai_companion(
     components.html(
         _render_component_html(
             component_id=key_prefix,
-            context=_context_dict(context, current_chat_mode()),
+            context=_context_dict(context, st.session_state.get(_state_key(key_prefix, "latest_mode"), current_chat_mode())),
             visual=visual,
             history=ai_state["history"],
             latest_question=ai_state["latest_question"],
